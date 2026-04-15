@@ -21,9 +21,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 ClassHop
               </span>
             </div>
-            <span className="text-[11px] font-medium text-slate-400">
-              Spring 2025
-            </span>
           </header>
 
           <main className="flex-1 py-6 sm:py-8">{children}</main>

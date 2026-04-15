@@ -13,6 +13,8 @@ type Interest =
   | "Social Science"
   | "Environment";
 
+type Semester = "Spring 2026" | "Fall 2026";
+
 type Course = {
   id: string;
   title: string;
@@ -28,6 +30,7 @@ type Course = {
   endTime: string;
   interests: Interest[];
   description: string;
+  semester?: string;
 };
 
 const INTEREST_OPTIONS: Interest[] = [
@@ -159,6 +162,7 @@ function findNextCourseStart(now: Date): string {
 
 export default function HomePage() {
   const defaultTime = useMemo(() => findNextCourseStart(new Date()), []);
+  const [semester, setSemester] = useState<Semester>("Spring 2026");
   const [timeValue, setTimeValue] = useState<string>(defaultTime);
   const [selectedInterests, setSelectedInterests] = useState<Interest[]>([]);
   const [currentCourse, setCurrentCourse] = useState<Course | null>(null);
@@ -166,10 +170,21 @@ export default function HomePage() {
   const [isFinding, setIsFinding] = useState(false);
   const [searched, setSearched] = useState(false);
 
+  function handleSemesterChange(s: Semester) {
+    setSemester(s);
+    setCurrentCourse(null);
+    setLastPool([]);
+    setSearched(false);
+  }
+
   const filteredCourses = useMemo(() => {
     const selectedMoment = parseTimeToday(timeValue);
 
     return allCourses.filter((course) => {
+      // courses without a semester field default to Spring 2026
+      const courseSemester = course.semester ?? "Spring 2026";
+      if (courseSemester !== semester) return false;
+
       if (selectedInterests.length > 0) {
         const intersects = course.interests.some((i) =>
           (selectedInterests as Interest[]).includes(i)
@@ -193,7 +208,7 @@ export default function HomePage() {
 
       return startMatches || hasThirtyMinutesLeft;
     });
-  }, [timeValue, selectedInterests]);
+  }, [timeValue, selectedInterests, semester]);
 
   function toggleInterest(interest: Interest) {
     setSelectedInterests((prev) =>
@@ -264,9 +279,28 @@ export default function HomePage() {
     <div className="flex flex-col gap-8">
       {/* Hero */}
       <section className="pt-2 pb-4">
-        <p className="text-[11px] font-medium uppercase tracking-[0.15em] text-slate-400">
-          UC Berkeley · Free Hour Discovery
-        </p>
+        <div className="flex items-center justify-between">
+          <p className="text-[11px] font-medium uppercase tracking-[0.15em] text-slate-400">
+            UC Berkeley · Free Hour Discovery
+          </p>
+          {/* Semester toggle */}
+          <div className="flex items-center gap-0.5 rounded-full border border-slate-200 bg-slate-50 p-0.5">
+            {(["Spring 2026", "Fall 2026"] as Semester[]).map((s) => (
+              <button
+                key={s}
+                type="button"
+                onClick={() => handleSemesterChange(s)}
+                className={`rounded-full px-3 py-1 text-[11px] font-medium transition-all duration-150 ${
+                  s === semester
+                    ? "bg-white text-slate-900 shadow-sm"
+                    : "text-slate-500 hover:text-slate-700"
+                }`}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+        </div>
         <h1 className="mt-2 text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900">
           Wander into a class.
         </h1>
@@ -344,7 +378,9 @@ export default function HomePage() {
       {searched && !currentCourse && !isFinding && (
         <section>
           <p className="text-[14px] text-slate-500">
-            No classes match that combo. Try a different time or fewer interests.
+            {semester === "Fall 2026"
+              ? "Fall 2026 courses aren't available yet — check back soon."
+              : "No classes match that combo. Try a different time or fewer interests."}
           </p>
         </section>
       )}
