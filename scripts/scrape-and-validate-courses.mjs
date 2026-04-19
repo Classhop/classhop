@@ -16,7 +16,7 @@ function parseArgs() {
   const out = {
     year: 2026,
     semester: "Spring",
-    limit: 120,
+    limit: null,
     catalogOut: "data/catalog.json",
     offeringsOut: "data/offerings.json"
   };
@@ -25,7 +25,10 @@ function parseArgs() {
     const val = args[i + 1];
     if (key === "--year" && val) out.year = Number(val);
     if (key === "--semester" && val) out.semester = val;
-    if (key === "--limit" && val) out.limit = Number(val);
+    if (key === "--limit" && val) {
+      const parsed = Number(val);
+      if (Number.isFinite(parsed) && parsed > 0) out.limit = parsed;
+    }
     if (key === "--catalog-out" && val) out.catalogOut = val;
     if (key === "--offerings-out" && val) out.offeringsOut = val;
   }
@@ -42,18 +45,11 @@ function normalizeSemester(semesterRaw) {
 }
 
 function toMeetDays(daysBooleanArray) {
+  // BerkeleyTime returns `days` as [Mon, Tue, Wed, Thu, Fri, Sat, Sun].
   if (!Array.isArray(daysBooleanArray) || daysBooleanArray.length < 7) return "MW";
-  const dayCodes = [
-    "", // Sunday
-    "M",
-    "T",
-    "W",
-    "Tr",
-    "F",
-    "" // Saturday
-  ];
+  const dayCodes = ["M", "T", "W", "Tr", "F", "", ""];
   let result = "";
-  for (let i = 1; i <= 5; i += 1) {
+  for (let i = 0; i <= 4; i += 1) {
     if (daysBooleanArray[i]) result += dayCodes[i];
   }
   return result || "MW";
@@ -136,7 +132,7 @@ async function scrapeCatalogRows({ year, semester, limit }) {
     }
   `;
 
-  while (rows.length < limit) {
+  while (true) {
     const data = await graphql(query, {
       year,
       semester,
@@ -147,10 +143,11 @@ async function scrapeCatalogRows({ year, semester, limit }) {
     const batch = data.catalogSearch.results ?? [];
     if (batch.length === 0) break;
     rows.push(...batch);
+    if (limit && rows.length >= limit) break;
     page += 1;
   }
 
-  return rows.slice(0, limit);
+  return limit ? rows.slice(0, limit) : rows;
 }
 
 function joinCatalogOfferings(catalogList, offeringList) {
