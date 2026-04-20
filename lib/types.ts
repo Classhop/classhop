@@ -1,14 +1,14 @@
 export type Semester = "Spring 2026" | "Fall 2026";
 
 export type Interest =
-  | "Science"
-  | "Arts"
-  | "Philosophy"
-  | "Tech"
-  | "History"
-  | "Business"
-  | "Social Science"
-  | "Environment";
+  | "Science & Nature"
+  | "Tech & Engineering"
+  | "Math & Data"
+  | "Arts & Design"
+  | "History & Culture"
+  | "Society & Politics"
+  | "Business & Economics"
+  | "Health & Environment";
 
 /** Stable catalog identity: subject + course number (e.g. COMPSCI + 61A → id COMPSCI-61A). */
 export type CatalogEntry = {

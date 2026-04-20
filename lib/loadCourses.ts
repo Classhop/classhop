@@ -15,7 +15,27 @@ export async function loadJoinedCourses(): Promise<Course[]> {
 
   const byCatalogId = new Map(catalog.map((c) => [c.id, c]));
 
-  return offerings.map((o) => {
+  const isUndergrad = (entry: CatalogEntry) => {
+    const m = entry.courseNumber.match(/^[A-Za-z]*(\d+)/);
+    return m ? parseInt(m[1], 10) <= 199 : false;
+  };
+
+  const isNotProject = (entry: CatalogEntry) =>
+    !/\bprojects?\b/i.test(entry.title) && !/\bcapstone\b/i.test(entry.title);
+
+  const isNotLab = (entry: CatalogEntry) =>
+    !/\blab(oratory|s)?\b/i.test(entry.title);
+
+  const isNotBootcamp = (entry: CatalogEntry) =>
+    !/\bbootcamps?\b/i.test(entry.title);
+
+  return offerings
+    .filter((o) => !/internet|online/i.test(o.building ?? ""))
+    .filter((o) => {
+      const cat = byCatalogId.get(o.catalogId);
+      return cat ? isUndergrad(cat) && isNotProject(cat) && isNotLab(cat) && isNotBootcamp(cat) : false;
+    })
+    .map((o) => {
     const cat = byCatalogId.get(o.catalogId);
     if (!cat) {
       throw new Error(`Offering ${o.id} references unknown catalogId ${o.catalogId}`);

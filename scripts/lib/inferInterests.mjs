@@ -3,116 +3,162 @@
  */
 
 const INTEREST_OPTIONS = [
-  "Science",
-  "Arts",
-  "Philosophy",
-  "Tech",
-  "History",
-  "Business",
-  "Social Science",
-  "Environment"
+  "Science & Nature",
+  "Tech & Engineering",
+  "Math & Data",
+  "Arts & Design",
+  "History & Culture",
+  "Society & Politics",
+  "Business & Economics",
+  "Health & Environment"
 ];
 
+/** Strong subject-code priors — bump score by 3 so it dominates weak text signals. */
 const SUBJECT_HINT = {
-  COMPSCI: "Tech",
-  DATA: "Tech",
-  EECS: "Tech",
-  ELENG: "Tech",
-  ENGIN: "Tech",
-  INDENG: "Tech",
-  BIOENG: "Tech",
-  MATH: "Science",
-  STAT: "Science",
-  PHYSICS: "Science",
-  CHEM: "Science",
-  MCELLBI: "Science",
-  INTEGBI: "Science",
-  PLANTBI: "Science",
-  BIOLOGY: "Science",
-  NEU: "Science",
-  ASTRON: "Science",
-  EPS: "Science",
-  HISTORY: "History",
-  PHILOS: "Philosophy",
-  ECON: "Business",
-  UGBA: "Business",
-  SOCIOL: "Social Science",
-  POLSCI: "Social Science",
-  ANTHRO: "Social Science",
-  PSYCH: "Social Science",
-  ESPM: "Environment",
-  ENVECON: "Environment",
-  ENGLISH: "Arts",
-  MUSIC: "Arts",
-  THEATER: "Arts",
-  ART: "Arts",
-  CDSS: "Tech",
-  INFO: "Tech",
-  CYPLAN: "Environment",
-  PUBPOL: "Social Science",
-  GPP: "Social Science",
-  PBHLTH: "Science",
-  EDUC: "Social Science"
+  // Tech & Engineering
+  COMPSCI: "Tech & Engineering",
+  EECS: "Tech & Engineering",
+  ELENG: "Tech & Engineering",
+  ENGIN: "Tech & Engineering",
+  INDENG: "Tech & Engineering",
+  BIOENG: "Tech & Engineering",
+  ME: "Tech & Engineering",
+  CE: "Tech & Engineering",
+  AEROENG: "Tech & Engineering",
+  INFO: "Tech & Engineering",
+  // Math & Data
+  MATH: "Math & Data",
+  STAT: "Math & Data",
+  DATA: "Math & Data",
+  CDSS: "Math & Data",
+  // Science & Nature
+  PHYSICS: "Science & Nature",
+  CHEM: "Science & Nature",
+  MCELLBI: "Science & Nature",
+  INTEGBI: "Science & Nature",
+  PLANTBI: "Science & Nature",
+  BIOLOGY: "Science & Nature",
+  NEU: "Science & Nature",
+  ASTRON: "Science & Nature",
+  EPS: "Science & Nature",
+  // Arts & Design
+  ENGLISH: "Arts & Design",
+  MUSIC: "Arts & Design",
+  THEATER: "Arts & Design",
+  TDPS: "Arts & Design",
+  ART: "Arts & Design",
+  ARCH: "Arts & Design",
+  FILM: "Arts & Design",
+  // History & Culture
+  HISTORY: "History & Culture",
+  ANTHRO: "History & Culture",
+  ETHSTD: "History & Culture",
+  AFRICAM: "History & Culture",
+  SASIAN: "History & Culture",
+  MELC: "History & Culture",
+  // Society & Politics
+  PHILOS: "Society & Politics",
+  SOCIOL: "Society & Politics",
+  POLSCI: "Society & Politics",
+  PSYCH: "Society & Politics",
+  PUBPOL: "Society & Politics",
+  GPP: "Society & Politics",
+  EDUC: "Society & Politics",
+  LEGALST: "Society & Politics",
+  COGSCI: "Society & Politics",
+  // Business & Economics
+  ECON: "Business & Economics",
+  UGBA: "Business & Economics",
+  // Health & Environment
+  PBHLTH: "Health & Environment",
+  NUT: "Health & Environment",
+  ESPM: "Health & Environment",
+  ENVECON: "Health & Environment",
+  CYPLAN: "Health & Environment",
+  GEOG: "Health & Environment"
 };
 
 /** @type {Record<string, RegExp[]>} */
 const SIGNALS = {
-  Tech: [
-    /\b(computer|computing|software|algorithm|programming|program)\b/i,
+  "Tech & Engineering": [
+    /\b(computer science|computing|software engineering|algorithm|programming)\b/i,
     /\b(machine learning|artificial intelligence|deep learning|neural network)\b/i,
-    /\b(data science|data mining|big data|dataset|visualization dashboard)\b/i,
-    /\b(data structure|database|cryptograph|cybersecurity|security protocol)\b/i,
-    /\b(operating system|compiler|distributed system|network protocol|internet)\b/i,
-    /\b(reinforcement learning|robotics|computer vision|natural language)\b/i,
-    /\b(statistical learning|information retrieval|web application|API)\b/i,
-    /\b(embedded system|blockchain|human-computer interaction|HCI)\b/i
+    /\b(data structure|database|cryptograph|cybersecurity|operating system)\b/i,
+    /\b(compiler|distributed system|network protocol|computer architecture)\b/i,
+    /\b(reinforcement learning|robotics|computer vision|natural language processing)\b/i,
+    /\b(circuit|signal processing|semiconductor|microprocessor|VLSI)\b/i,
+    /\b(embedded system|human-computer interaction|HCI|web application)\b/i,
+    /\b(mechanical engineering|civil engineering|aerospace|structural analysis)\b/i,
+    /\b(thermodynamics|fluid dynamics|manufacturing|control system)\b/i
   ],
-  Science: [
-    /\b(physics|chemistry|biology|molecular|cell biology|biochemistry)\b/i,
-    /\b(calculus|differential equation|linear algebra|probability theory)\b/i,
-    /\b(statistics|statistical method|hypothesis test|biostatistics)\b/i,
-    /\b(astronom|laboratory|experiment|quantum|thermodynamic)\b/i,
-    /\b(genetic|evolution|ecology|physiology|anatomy|neuroscience)\b/i,
-    /\b(geolog|climate model|epidemiolog|immunolog|microbi)\b/i,
-    /\b(mathematical proof|topology|number theory)\b/i,
-    /\b(public health|epidemiology|nutrition science|clinical trial)\b/i
+  "Math & Data": [
+    /\b(calculus|differential equation|linear algebra|abstract algebra)\b/i,
+    /\b(probability theory|stochastic|combinatorics|number theory|topology)\b/i,
+    /\b(mathematical proof|real analysis|complex analysis|discrete math)\b/i,
+    /\b(statistics|statistical method|hypothesis test|regression|inference)\b/i,
+    /\b(data science|data analysis|data mining|machine learning)\b/i,
+    /\b(optimization|numerical method|simulation|modeling)\b/i
   ],
-  History: [
-    /\b(history|historical|medieval|renaissance|ancient world)\b/i,
-    /\b(civilization|colonization|revolution|warfare|archive)\b/i,
-    /\b(19th century|20th century|primary source|historiograph)\b/i
+  "Science & Nature": [
+    /\b(biology|molecular biology|cell biology|biochemistry|genetics)\b/i,
+    /\b(physics|quantum mechanics|relativity|electromagnetism|optics)\b/i,
+    /\b(chemistry|organic chemistry|inorganic|chemical reaction)\b/i,
+    /\b(astronomy|astrophysics|cosmology|planetary science)\b/i,
+    /\b(evolution|ecology|physiology|anatomy|neuroscience|microbiology)\b/i,
+    /\b(geology|geophysics|atmospheric science|oceanography|climate)\b/i,
+    /\b(laboratory|experiment|empirical|scientific method)\b/i,
+    /\b(immunology|virology|epidemiology|pharmacology)\b/i
   ],
-  Business: [
-    /\b(economics|economic theory|microeconom|macroeconom)\b/i,
-    /\b(finance|financial market|investment|accounting)\b/i,
-    /\b(business strategy|management|entrepreneur|marketing)\b/i,
-    /\b(pricing|auction|contract theory|game theory)\b/i
+  "Arts & Design": [
+    /\b(literature|novel|poetry|fiction|creative writing|prose)\b/i,
+    /\b(music|composition|orchestra|chamber music|musicology)\b/i,
+    /\b(theater|theatre|drama|acting|playwriting|performance)\b/i,
+    /\b(film|cinema|documentary|screenwriting|cinematography)\b/i,
+    /\b(visual art|painting|sculpture|drawing|printmaking|photography)\b/i,
+    /\b(architecture|architectural design|urban design|landscape)\b/i,
+    /\b(graphic design|typography|illustration|studio art)\b/i,
+    /\b(dance|choreography|art history|aesthetic|criticism)\b/i
   ],
-  Philosophy: [
-    /\b(philosophy|philosophical|metaphysics|epistemology)\b/i,
-    /\b(ethics|ethical theory|moral reasoning|existential)\b/i,
-    /\b(logic\s|formal logic|argumentation)\b/i
+  "History & Culture": [
+    /\b(history|historical|historiography|primary source|archive)\b/i,
+    /\b(ancient|medieval|renaissance|early modern|19th century|20th century)\b/i,
+    /\b(civilization|empire|colonialism|colonization|decolonization)\b/i,
+    /\b(revolution|warfare|diplomacy|political history)\b/i,
+    /\b(anthropology|ethnography|cultural studies|cross-cultural)\b/i,
+    /\b(diaspora|migration|indigenous|heritage|tradition)\b/i,
+    /\b(religion|mythology|ritual|sacred|secular)\b/i
   ],
-  Arts: [
-    /\b(literature|novel|poetry|fiction|creative writing)\b/i,
-    /\b(music|composition|orchestra|theater|theatre|drama)\b/i,
-    /\b(film|cinema|dance|visual art|painting|sculpture)\b/i,
-    /\b(aesthetic|art history|performance)\b/i
+  "Society & Politics": [
+    /\b(political science|politics|governance|democracy|election)\b/i,
+    /\b(public policy|policy analysis|legislation|regulation)\b/i,
+    /\b(sociology|social theory|social movement|inequality)\b/i,
+    /\b(race|racism|gender|sexuality|identity|intersectionality)\b/i,
+    /\b(psychology|cognitive|behavioral|perception|mental health)\b/i,
+    /\b(law|legal|jurisprudence|constitutional|criminal justice)\b/i,
+    /\b(philosophy|ethics|moral|epistemology|metaphysics|logic)\b/i,
+    /\b(international relations|globalization|diplomacy|foreign policy)\b/i,
+    /\b(education|pedagogy|learning|curriculum|teaching)\b/i,
+    /\b(media|journalism|communication|rhetoric|discourse)\b/i
   ],
-  "Social Science": [
-    /\b(psychology|psychological|sociology|anthropology)\b/i,
-    /\b(political science|public policy|governance|democracy)\b/i,
-    /\b(politic(al|s)\s|legislature|election|international relations)\b/i,
-    /\b(social theory|inequality|race|gender|identity)\b/i,
-    /\b(law\s|legal studies|jurisprudence)\b/i,
-    /\b(education policy|learning science|pedagog)\b/i,
-    /\b(criminal justice|demograph|survey method)\b/i
+  "Business & Economics": [
+    /\b(economics|economic theory|microeconomics|macroeconomics)\b/i,
+    /\b(finance|financial market|investment|portfolio|asset pricing)\b/i,
+    /\b(accounting|financial statement|auditing|taxation)\b/i,
+    /\b(business strategy|management|organizational|leadership)\b/i,
+    /\b(entrepreneurship|startup|venture capital|innovation)\b/i,
+    /\b(marketing|consumer behavior|brand|supply chain|operations)\b/i,
+    /\b(game theory|mechanism design|auction|contract theory)\b/i,
+    /\b(labor economics|industrial organization|development economics)\b/i
   ],
-  Environment: [
-    /\b(environmental|ecology|ecosystem|climate change|sustainability)\b/i,
-    /\b(conservation|biodiversity|forestry|agriculture|soil)\b/i,
-    /\b(renewable energy|pollution|natural resource)\b/i,
-    /\b(land use|urban planning and environment)\b/i
+  "Health & Environment": [
+    /\b(public health|global health|epidemiology|biostatistics)\b/i,
+    /\b(nutrition|diet|food system|health policy|health care)\b/i,
+    /\b(environmental|ecosystem|climate change|global warming)\b/i,
+    /\b(sustainability|renewable energy|conservation|biodiversity)\b/i,
+    /\b(pollution|toxicology|waste|water quality|air quality)\b/i,
+    /\b(urban planning|land use|transportation|infrastructure)\b/i,
+    /\b(natural resource|forestry|agriculture|soil science)\b/i,
+    /\b(mental health|wellbeing|stress|community health)\b/i
   ]
 };
 
@@ -136,22 +182,23 @@ export function inferInterestsFromCatalogEntry(entry) {
   const subject = (entry.subject || "").toUpperCase();
   const title = entry.title || "";
   const description = entry.description || "";
-  const hay = `${title}\n${description}`.toLowerCase();
+  const hay = `${title}\n${description}`;
 
   const scores = scoreSignals(hay);
 
   const hint = SUBJECT_HINT[subject];
   if (hint && scores[hint] !== undefined) {
-    scores[hint] += 2;
+    scores[hint] += 3;
   }
 
-  const ranked = [...INTEREST_OPTIONS].filter((k) => scores[k] > 0).sort((a, b) => scores[b] - scores[a]);
+  const ranked = [...INTEREST_OPTIONS]
+    .filter((k) => scores[k] > 0)
+    .sort((a, b) => scores[b] - scores[a]);
 
   if (ranked.length === 0) {
     if (hint && INTEREST_OPTIONS.includes(hint)) return [hint];
-    return ["Science"];
+    return ["Science & Nature"];
   }
 
-  const top = ranked.slice(0, 3);
-  return top;
+  return ranked.slice(0, 3);
 }

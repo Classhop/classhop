@@ -1,18 +1,19 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
+import Link from "next/link";
 
 import type { Course, Interest, Semester } from "../lib/types";
 
 const INTEREST_OPTIONS: Interest[] = [
-  "Science",
-  "Arts",
-  "Philosophy",
-  "Tech",
-  "History",
-  "Business",
-  "Social Science",
-  "Environment"
+  "Business & Economics",
+  "Society & Politics",
+  "Science & Nature",
+  "Tech & Engineering",
+  "Math & Data",
+  "Arts & Design",
+  "History & Culture",
+  "Health & Environment"
 ];
 
 const EARLIEST_MINUTES = 7 * 60; // 7:00 AM
@@ -95,70 +96,174 @@ function stripPrereqText(description: string): string {
   return compact.slice(0, match.index).trim().replace(/[;:,.\-–\s]+$/g, "");
 }
 
-function getDisplayDepartment(department: string): string {
+function getDisplayDepartment(department: string, subject?: string): string {
+  // For umbrella departments, resolve to the actual program by subject code
+  if (department === "UG Interdisciplinary Studies") {
+    const bySubject: Record<string, string> = {
+      AMERSTD: "American Studies",
+      MEDIAST: "Media Studies",
+      DISSTD: "Disability Studies",
+      ISF: "Interdisciplinary Studies",
+      UGIS: "Interdisciplinary Studies",
+      GWS: "Gender and Women's Studies",
+      LS: "Letters and Science",
+      EPS: "Earth and Planetary Science",
+      UGBA: "Business Administration",
+    };
+    const s = (subject || "").toUpperCase();
+    return bySubject[s] ?? "Interdisciplinary Studies";
+  }
+
   const map: Record<string, string> = {
-    "Electrical Eng & Computer Sci": "Electrical Engineering & Computer Sciences",
-    "Industrial Eng & Operations Res": "Industrial Engineering & Operations Research",
-    "Industrial Eng and Ops Research": "Industrial Engineering & Operations Research"
+    // Agriculture & Resource
+    "Ag & Resource Econ & Pol":        "Agricultural & Resource Economics and Policy",
+    "Ag & Resource Economics":         "Agricultural & Resource Economics",
+    // Ancient / Classical
+    "Anc Hist Med Arc Grad Grp":       "Ancient History and Mediterranean Archaeology",
+    "Ancient Greek & Roman Studies":   "Ancient Greek and Roman Studies",
+    // Applied / Computational
+    "Applied Sci & Tech Grad Grp":     "Applied Science and Technology",
+    "Biophysics Grad Grp":             "Biophysics",
+    "Buddhist Studies Grad Grp":       "Buddhist Studies",
+    "Chem & Biomolecular Eng":         "Chemical and Biomolecular Engineering",
+    "City & Regional Planning":        "City and Regional Planning",
+    "Civil & Environmental Eng":       "Civil and Environmental Engineering",
+    "Clg of Comp Data Sci & Soc":      "Computing, Data Science, and Society",
+    "Comp Precision Health Grad Grp":  "Computational Precision Health",
+    "Comp Social Science Grad Grp":    "Computational Social Science",
+    "Comparative Biochem Grad Grp":    "Comparative Biochemistry",
+    "Computational Biology Grad Grp":  "Computational Biology",
+    "Data Science Undergrad Studies":  "Data Science",
+    "Development Eng Grad Grp":        "Development Engineering",
+    "Development Practice Grad Grp":   "Development Practice",
+    "Earth & Planetary Science":       "Earth and Planetary Science",
+    "East Asian Lang & Culture":       "East Asian Languages and Cultures",
+    "Electrical Eng & Computer Sci":   "Electrical Engineering and Computer Sciences",
+    "Electrical Eng & Computer Sci":   "Electrical Engineering and Computer Sciences",
+    "Energy & Resources Group":        "Energy and Resources",
+    "Env Sci, Policy, & Mgmt":         "Environmental Science, Policy, and Management",
+    "European Studies Grad Grp":       "European Studies",
+    "Folklore Grad Grp":               "Folklore",
+    "Gender & Womens Studies":         "Gender and Women's Studies",
+    "Global Metro Std Grad Grp":       "Global Metropolitan Studies",
+    "Goldman School Public Policy":    "Goldman School of Public Policy",
+    "Grad School of Education":        "Graduate School of Education",
+    "Grad School of Journalism":       "Graduate School of Journalism",
+    "Health & Medical Sci Grad Grp":   "Health and Medical Sciences",
+    "IAS Teaching Program":            "Interdisciplinary Arts and Sciences",
+    "Industrial Eng & Ops Research":   "Industrial Engineering and Operations Research",
+    "Industrial Eng & Operations Res": "Industrial Engineering and Operations Research",
+    "Industrial Eng and Ops Research": "Industrial Engineering and Operations Research",
+    "Inst of Urban & Reg Dev":         "Institute of Urban and Regional Development",
+    "Interdisc Social Science Pgms":   "Interdisciplinary Social Science",
+    "L&S Arts & Humanities Division":  "Arts and Humanities",
+    "L&S Legal Studies":               "Legal Studies",
+    "Landscape Arch & Env Plan":       "Landscape Architecture and Environmental Planning",
+    "Materials Science & Eng":         "Materials Science and Engineering",
+    "Middle Eastern Lang & Cultures":  "Middle Eastern Languages and Cultures",
+    "Molecular & Cell Biology":        "Molecular and Cell Biology",
+    "Nano Sci & Eng Grad Grp":         "Nanoscience and Engineering",
+    "New Media Grad Grp":              "New Media",
+    "Nutritional Sciences & Tox":      "Nutritional Sciences and Toxicology",
+    "Optometry & Vision Science":      "Optometry and Vision Science",
+    "Other Math & Physical Sci Pgms":  "Mathematics and Physical Sciences",
+    "Plant & Microbial Biology":       "Plant and Microbial Biology",
+    "Rausser Clg Natural Resources":   "Rausser College of Natural Resources",
+    "Scandinavian":                    "Scandinavian Studies",
+    "Sci & Tech Stds Grad Grp":        "Science and Technology Studies",
+    "Science & Math Educ Grad Grp":    "Science and Mathematics Education",
+    "Slavic Languages & Literatures":  "Slavic Languages and Literatures",
+    "South & SE Asian Studies":        "South and Southeast Asian Studies",
+    "Spanish & Portuguese":            "Spanish and Portuguese",
+    "Theater Dance & Perf Stds":       "Theater, Dance, and Performance Studies",
+    "Vision Science Grad Grp":         "Vision Science",
   };
   return map[department] ?? department;
 }
 
 function getDisplayCollege(course: Course): string {
-  const dept = getDisplayDepartment(course.department);
   const subject = (course.code.split(" ")[0] || "").toUpperCase();
+  const rawDept = course.department;
 
-  const bySubject: Record<string, string> = {
+  // Explicit department → college map (raw scraped department names as keys)
+  const deptToCollege: Record<string, string> = {
+    // Haas School of Business
+    "Haas School of Business":            "Haas School of Business",
+
+    // College of Chemistry
+    "Chemistry":                          "College of Chemistry",
+    "Chem & Biomolecular Eng":            "College of Chemistry",
+
     // College of Engineering
-    AEROENG: "College of Engineering",
-    BIOENG: "College of Engineering",
-    CE: "College of Engineering",
-    COMPSCI: "College of Engineering",
-    EECS: "College of Engineering",
-    ELENG: "College of Engineering",
-    ENGIN: "College of Engineering",
-    INDENG: "College of Engineering",
-    ME: "College of Engineering",
+    "Bioengineering":                     "College of Engineering",
+    "Civil & Environmental Eng":          "College of Engineering",
+    "Electrical Eng & Computer Sci":      "College of Engineering",
+    "Engineering":                        "College of Engineering",
+    "Industrial Eng & Ops Research":      "College of Engineering",
+    "Industrial Eng & Operations Res":    "College of Engineering",
+    "Industrial Eng and Ops Research":    "College of Engineering",
+    "Materials Science & Eng":            "College of Engineering",
+    "Mechanical Engineering":             "College of Engineering",
+    "Nuclear Engineering":                "College of Engineering",
+
+    // College of Computing, Data Science & Society (CDSS)
+    "Clg of Comp Data Sci & Soc":         "College of Computing, Data Science & Society",
+    "Data Science Undergrad Studies":     "College of Computing, Data Science & Society",
+    "School of Information":              "School of Information",
+
+    // College of Environmental Design
+    "Architecture":                       "College of Environmental Design",
+    "City & Regional Planning":           "College of Environmental Design",
+    "Landscape Arch & Env Plan":          "College of Environmental Design",
+    "Inst of Urban & Reg Dev":            "College of Environmental Design",
 
     // Rausser College of Natural Resources
-    ESPM: "Rausser College of Natural Resources",
-    PLANTBI: "Rausser College of Natural Resources",
-    INTEGBI: "Rausser College of Natural Resources",
-    ENVECON: "Rausser College of Natural Resources",
-    AGRS: "Rausser College of Natural Resources",
+    "Env Sci, Policy, & Mgmt":            "Rausser College of Natural Resources",
+    "Plant & Microbial Biology":          "Rausser College of Natural Resources",
+    "Nutritional Sciences & Tox":         "Rausser College of Natural Resources",
+    "Rausser Clg Natural Resources":      "Rausser College of Natural Resources",
+    "Ag & Resource Economics":            "Rausser College of Natural Resources",
+    "Ag & Resource Econ & Pol":           "Rausser College of Natural Resources",
+    "Energy & Resources Group":           "Rausser College of Natural Resources",
 
-    // Haas
-    UGBA: "Haas School of Business",
-
-    // Other schools/colleges
-    INFO: "School of Information",
-    PBHLTH: "School of Public Health",
-    GPP: "Goldman School of Public Policy",
-    CYPLAN: "College of Environmental Design",
-    ARCH: "College of Environmental Design",
-    EDUC: "Berkeley School of Education"
+    // Professional schools
+    "School of Public Health":            "School of Public Health",
+    "Goldman School Public Policy":       "Goldman School of Public Policy",
+    "School of Optometry":                "School of Optometry",
+    "Optometry & Vision Science":         "School of Optometry",
+    "School of Social Welfare":           "School of Social Welfare",
+    "Grad School of Education":           "Graduate School of Education",
+    "Berkeley School of Education":       "Graduate School of Education",
+    "Grad School of Journalism":          "Graduate School of Journalism",
   };
 
-  if (bySubject[subject]) return bySubject[subject];
+  if (deptToCollege[rawDept]) return deptToCollege[rawDept];
 
-  const byDepartment: Array<[RegExp, string]> = [
-    [/Electrical Engineering & Computer Sciences|Engineering|Bioengineering|Mechanical/i, "College of Engineering"],
-    [/Env Sci, Policy, & Mgmt|Plant & Microbial Biology|Integrative Biology|Ag & Resource Econ/i, "Rausser College of Natural Resources"],
-    [/Haas School of Business/i, "Haas School of Business"],
-    [/School of Information/i, "School of Information"],
-    [/School of Public Health/i, "School of Public Health"],
-    [/Goldman School Public Policy/i, "Goldman School of Public Policy"],
-    [/Architecture|City & Regional Planning|Environmental Design/i, "College of Environmental Design"],
-    [/Berkeley School of Education|Grad School of Education/i, "Berkeley School of Education"]
-  ];
+  // Subject-code overrides for ambiguous departments
+  const subjectToCollege: Record<string, string> = {
+    AEROENG:  "College of Engineering",
+    MECENG:   "College of Engineering",
+    ENGIN:    "College of Engineering",
+    UGBA:     "Haas School of Business",
+    ARCH:     "College of Environmental Design",
+    CYPLAN:   "College of Environmental Design",
+    LDARCH:   "College of Environmental Design",
+    ESPM:     "Rausser College of Natural Resources",
+    PLANTBI:  "Rausser College of Natural Resources",
+    ENVECON:  "Rausser College of Natural Resources",
+    NUSCTX:   "Rausser College of Natural Resources",
+    INFO:     "School of Information",
+    PBHLTH:   "School of Public Health",
+    GPP:      "Goldman School of Public Policy",
+    OPTOM:    "School of Optometry",
+    EDUC:     "Graduate School of Education",
+    JOURN:    "Graduate School of Journalism",
+  };
 
-  for (const [pattern, college] of byDepartment) {
-    if (pattern.test(dept)) return college;
-  }
+  if (subjectToCollege[subject]) return subjectToCollege[subject];
 
-  // For the L&S fallback case, show the specific subject/department name
-  // rather than a generic college label.
-  return dept;
+  // Everything else is College of Letters & Science
+  return "College of Letters & Science";
 }
 
 function formatInstructor(instructor: string): string {
@@ -477,9 +582,9 @@ export function ClassHopClient({ initialCourses }: { initialCourses: Course[] })
   const [selectedInterests, setSelectedInterests] = useState<Interest[]>([]);
   const [currentCourse, setCurrentCourse] = useState<Course | null>(null);
   const [lastPool, setLastPool] = useState<Course[]>([]);
-  const [skippedCourses, setSkippedCourses] = useState<Course[]>([]);
-  const [isFinding, setIsFinding] = useState(false);
-  const [noMoreMatches, setNoMoreMatches] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [sortCol, setSortCol] = useState<"title" | "code" | null>(null);
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
   const [pendingCalendarCourse, setPendingCalendarCourse] = useState<Course | null>(null);
 
   const selectedTime24 = useMemo(
@@ -557,42 +662,53 @@ export function ClassHopClient({ initialCourses }: { initialCourses: Course[] })
     );
   }
 
-  function handleFindClass() {
-    setSkippedCourses([]);
-    setCurrentCourse(null);
-    setNoMoreMatches(false);
-    if (filteredCourses.length === 0) {
-      setLastPool([]);
-      return;
+  const sortedPool = useMemo(() => {
+    if (!sortCol) return lastPool;
+    return [...lastPool].sort((a, b) => {
+      let va: string, vb: string;
+      if (sortCol === "title") {
+        va = a.title; vb = b.title;
+      } else {
+        va = a.code.split(" ")[0]; vb = b.code.split(" ")[0];
+      }
+      return sortDir === "asc" ? va.localeCompare(vb) : vb.localeCompare(va);
+    });
+  }, [lastPool, sortCol, sortDir]);
+
+  function handleSort(col: "title" | "code") {
+    if (sortCol === col) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortCol(col);
+      setSortDir("asc");
     }
-    setIsFinding(true);
-    setLastPool(filteredCourses);
-    window.setTimeout(() => {
-      const idx = Math.floor(Math.random() * filteredCourses.length);
-      setCurrentCourse(filteredCourses[idx]);
-      setNoMoreMatches(false);
-      setIsFinding(false);
-    }, 300);
   }
 
-  function handleFindAnother() {
-    if (lastPool.length === 0) return;
-    const skippedIds = new Set(skippedCourses.map((course) => course.id));
-    if (currentCourse) skippedIds.add(currentCourse.id);
-
-    if (currentCourse && !skippedCourses.some((course) => course.id === currentCourse.id)) {
-      setSkippedCourses((prev) => [...prev, currentCourse]);
+  function splatterPool(courses: Course[]): Course[] {
+    const PER_BUCKET = 3;
+    const seen = new Set<string>();
+    const result: Course[] = [];
+    for (const interest of INTEREST_OPTIONS) {
+      const bucket = courses
+        .filter((c) => c.interests.includes(interest))
+        .sort(() => Math.random() - 0.5)
+        .slice(0, PER_BUCKET);
+      for (const course of bucket) {
+        if (!seen.has(course.id)) {
+          seen.add(course.id);
+          result.push(course);
+        }
+      }
     }
+    return result;
+  }
 
-    const candidates = lastPool.filter((course) => !skippedIds.has(course.id));
-    if (candidates.length === 0) {
-      setCurrentCourse(null);
-      setNoMoreMatches(true);
-      return;
-    }
-    const idx = Math.floor(Math.random() * candidates.length);
-    setCurrentCourse(candidates[idx]);
-    setNoMoreMatches(false);
+  function handleFindClass() {
+    setCurrentCourse(null);
+    setHasSearched(true);
+    setLastPool(
+      selectedInterests.length === 0 ? splatterPool(filteredCourses) : filteredCourses
+    );
   }
 
   function handleDownloadDatabase() {
@@ -602,8 +718,7 @@ export function ClassHopClient({ initialCourses }: { initialCourses: Course[] })
   return (
     <>
       <style jsx global>{`
-        @import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300;1,9..144,500&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap");
-        :root { --navy:#002855; --navy-light:#0a3d6b; --gold:#fdb515; --gold-dim:#c98e00; --cream:#f8f5ef; --cream-dark:#ede8de; --text:#1a1612; --muted:#6b6356; --border:rgba(0,40,85,0.14); --chip-bg:#fff; --font-display:"Fraunces",Georgia,serif; --font-body:"DM Sans",system-ui,sans-serif; --font-mono:"DM Mono",monospace; --radius-sm:6px; --radius-md:12px; --radius-pill:999px;}
+        :root { --navy:#002855; --navy-light:#0a3d6b; --gold:#fdb515; --gold-dim:#c98e00; --cream:#f8f5ef; --cream-dark:#ede8de; --text:#1a1612; --muted:#6b6356; --border:rgba(0,40,85,0.14); --chip-bg:#fff; --font-display:var(--font-fraunces),Georgia,serif; --font-body:var(--font-dm-sans),system-ui,sans-serif; --font-mono:var(--font-dm-mono),monospace; --radius-sm:6px; --radius-md:12px; --radius-pill:999px;}
         .redesign-root,.redesign-root *{box-sizing:border-box}.redesign-root{min-height:100vh;display:flex;flex-direction:column;background:var(--cream);color:var(--text);font-family:var(--font-body)}
         .redesign-root nav{display:flex;align-items:center;justify-content:space-between;padding:1.125rem 2.5rem;border-bottom:1px solid var(--border);background:var(--cream);position:sticky;top:0;z-index:10}
         .logo{display:flex;align-items:center;gap:.5rem;text-decoration:none}.logo-mark{width:32px;height:32px;background:var(--navy);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center}.logo-wordmark{font-weight:500;font-size:1rem;color:var(--navy);letter-spacing:-.01em}
@@ -627,11 +742,29 @@ export function ClassHopClient({ initialCourses }: { initialCourses: Course[] })
         .card-meta,.card-desc{color:var(--muted);font-size:.86rem;line-height:1.65;margin-bottom:1rem}.card-instructor-link{color:var(--navy);text-decoration:none;font-weight:500;border-bottom:1px solid rgba(0,40,85,.25)}.card-instructor-link:hover{border-bottom-color:var(--navy)}.card-divider{height:1px;background:var(--border);margin:1.25rem 0}.card-location{margin-bottom:1.25rem}.card-location a{color:var(--navy);text-decoration:none;font-weight:500;border-bottom:1px solid rgba(0,40,85,.25)}.card-location a:hover{border-bottom-color:var(--navy)}
         .card-tags{display:flex;flex-wrap:wrap;gap:.4rem}.card-tag{font-family:var(--font-body);font-size:.72rem;letter-spacing:0;text-transform:none;color:var(--muted);background:var(--cream);border:1px solid var(--border);border-radius:var(--radius-pill);padding:.25rem .65rem}
         .card-actions{display:flex;justify-content:flex-end;gap:.6rem;padding:1rem 1.75rem;border-top:1px solid var(--border);background:var(--cream)}.btn-secondary,.btn-primary{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;border-radius:var(--radius-sm);padding:.6rem 1.1rem;cursor:pointer}.btn-secondary{color:var(--navy);background:transparent;border:1px solid var(--border)}.btn-primary{color:var(--gold);background:var(--navy);border:1px solid var(--navy)}
-        .skipped-section{margin-top:1rem;padding:1rem 1.25rem;border:1px solid var(--border);border-radius:var(--radius-md);background:#fff}
-        .skipped-title{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem}
-        .skipped-list{display:flex;flex-wrap:wrap;gap:.4rem}
-        .skipped-pill{font-family:var(--font-mono);font-size:.64rem;color:var(--muted);background:var(--cream);border:1px solid var(--border);border-radius:var(--radius-pill);padding:.22rem .55rem;cursor:pointer}
-        .skipped-pill:hover{border-color:rgba(0,40,85,.35);color:var(--navy)}
+        .results-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius-md)}
+        .results-table{width:100%;border-collapse:collapse;background:#fff}
+        .results-table thead tr{background:var(--navy)}
+        .results-table thead th{font-family:var(--font-mono);font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);padding:.75rem 1rem;text-align:left;font-weight:400;white-space:nowrap}
+        .results-table thead th.sortable{cursor:pointer;user-select:none}
+        .results-table thead th.sortable:hover{color:#fff}
+        .sort-arrow{margin-left:.35rem;opacity:.7}
+        .results-table tbody tr{cursor:pointer;border-top:1px solid var(--border);transition:background 100ms}
+        .results-table tbody tr:hover{background:rgba(0,40,85,.05)}
+        .results-table td{padding:.65rem 1rem;vertical-align:middle}
+        .rt-code{font-family:var(--font-mono);font-size:.7rem;color:var(--muted);white-space:nowrap}
+        .rt-title{font-size:.85rem;font-weight:500;color:var(--navy)}
+        .rt-instructor{font-size:.82rem;color:var(--muted);white-space:nowrap}
+        .rt-time{font-family:var(--font-mono);font-size:.7rem;color:var(--muted);white-space:nowrap}
+        .rt-location{font-size:.8rem;color:var(--muted)}
+        .rt-tags{display:flex;flex-wrap:wrap;gap:.25rem}
+        .rt-tag{font-size:.65rem;color:var(--muted);background:var(--cream);border:1px solid var(--border);border-radius:var(--radius-pill);padding:.15rem .5rem;white-space:nowrap}
+        .result-count{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;color:var(--muted);margin-bottom:.75rem}
+        .results-table tbody tr.row-active{background:rgba(0,40,85,.06)}
+        .results-table tbody tr.row-active td{border-bottom:none}
+        .expanded-row>td{padding:0;border-bottom:2px solid var(--border)}
+        .expanded-card-wrap{padding:1.5rem 2rem;background:rgba(0,40,85,.025);border-top:2px solid rgba(0,40,85,.1)}
+        .expanded-card-wrap .course-card{width:100%}
         .editor-panel{background:#fff;border:1px solid var(--border);border-radius:var(--radius-md);padding:1.25rem 1.5rem;margin-top:1.5rem}
         .editor-title{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
         .editor-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem}
@@ -663,6 +796,9 @@ export function ClassHopClient({ initialCourses }: { initialCourses: Course[] })
             <span className="logo-wordmark">ClassHop</span>
           </a>
           <div className="header-right">
+            <Link href="/categories" style={{fontFamily:"var(--font-mono)",fontSize:".68rem",letterSpacing:".06em",color:"var(--muted)",textDecoration:"none",border:"1px solid var(--border)",borderRadius:"var(--radius-pill)",padding:".3rem .85rem"}}>
+              Categories
+            </Link>
             <div className="top-tabs">
               <button
                 className={`top-tab-btn ${topTab === "discover" ? "active" : ""}`}
@@ -685,7 +821,7 @@ export function ClassHopClient({ initialCourses }: { initialCourses: Course[] })
             </div>
           </div>
         </nav>
-        <main className="redesign-main">
+        <main className="redesign-main" style={lastPool.length > 0 ? {maxWidth:"none",padding:"2.75rem 2.5rem 6rem"} : undefined}>
           {topTab === "discover" ? (
             <>
               <h1 className="hero-title">Got a free hour?</h1>
@@ -742,70 +878,89 @@ export function ClassHopClient({ initialCourses }: { initialCourses: Course[] })
                 </div>
               </div>
               <div className="cta-wrapper">
-                <button className="cta-btn" type="button" onClick={handleFindClass} disabled={isFinding || !selectedTime24}><span>{isFinding ? "Finding..." : "Find me a class"}</span></button>
+                <button className="cta-btn" type="button" onClick={handleFindClass} disabled={!selectedTime24}><span>Find me a class</span></button>
               </div>
-              {!isFinding && !currentCourse && filteredCourses.length === 0 && (
+              {hasSearched && lastPool.length === 0 && (
                 <div className="prominent-message prominent-message--form">
                   No classes match that combination.
                   <br />
                   Try a different day, time, or interest.
                 </div>
               )}
-              {(currentCourse || noMoreMatches || skippedCourses.length > 0) && (
+              {lastPool.length > 0 && (
                 <div className="result-section">
-                  {currentCourse && <p className="result-label">Here&apos;s one for you</p>}
-                  {currentCourse && (
-                    <div className="course-card">
-                      <div className="card-body">
-                        <div className="card-top">
-                          <div>
-                            <p className="card-college">{getDisplayCollege(currentCourse)}</p>
-                            <span className="card-dept">{getDisplayDepartment(currentCourse.department)}</span>
-                          </div>
-                          <span className="card-time-badge">{currentCourse.meetDays} · {formatTimeRange(currentCourse.startTime, currentCourse.endTime)}</span>
-                        </div>
-                        <h2 className="card-title">{currentCourse.title}</h2>
-                        <p className="card-meta">{currentCourse.code} - <InstructorWithRmpLink instructor={currentCourse.instructor} /></p>
-                        <div className="card-divider" />
-                        <div className="card-location"><a href={buildMapsUrl(currentCourse.building)} target="_blank" rel="noreferrer">{formatBuildingLabel(currentCourse.building)}, Room {currentCourse.room}</a></div>
-                        <p className="card-desc">{stripPrereqText(currentCourse.description)}</p>
-                        <div className="card-tags">{currentCourse.interests.map((tag)=><span key={tag} className="card-tag">{tag}</span>)}</div>
-                      </div>
-                      <div className="card-actions">
-                        <button
-                          className="btn-secondary"
-                          type="button"
-                          onClick={() => setPendingCalendarCourse(currentCourse)}
-                        >
-                          Add to Calendar
-                        </button>
-                        <button className="btn-primary" type="button" onClick={handleFindAnother}>Find Another</button>
-                      </div>
-                    </div>
-                  )}
-                  {noMoreMatches && (
-                    <div className="prominent-message prominent-message--result">No more classes match that combination.</div>
-                  )}
-                  {skippedCourses.length > 0 && (
-                    <div className="skipped-section">
-                      <p className="skipped-title">Skipped classes</p>
-                      <div className="skipped-list">
-                        {skippedCourses.map((course) => (
-                          <button
-                            key={course.id}
-                            type="button"
-                            className="skipped-pill"
-                            onClick={() => {
-                              setCurrentCourse(course);
-                              setNoMoreMatches(false);
-                            }}
-                          >
-                            {course.code} - {course.title}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                  <p className="result-count">{lastPool.length} {lastPool.length === 1 ? "class" : "classes"} available · click a row to expand</p>
+                  <div className="results-table-wrap">
+                    <table className="results-table">
+                      <thead>
+                        <tr>
+                          <th className="sortable" onClick={() => handleSort("code")}>
+                            Code <span className="sort-arrow">{sortCol === "code" ? (sortDir === "asc" ? "↑" : "↓") : "↕"}</span>
+                          </th>
+                          <th className="sortable" onClick={() => handleSort("title")}>
+                            Title <span className="sort-arrow">{sortCol === "title" ? (sortDir === "asc" ? "↑" : "↓") : "↕"}</span>
+                          </th>
+                          <th>Topic</th>
+                          <th>Time</th>
+                          <th>Location</th>
+                          <th>Instructor</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {sortedPool.map((course) => {
+                          const isOpen = currentCourse?.id === course.id;
+                          return (
+                            <React.Fragment key={course.id}>
+                              <tr
+                                className={isOpen ? "row-active" : ""}
+                                onClick={() => setCurrentCourse(isOpen ? null : course)}
+                              >
+                                <td><span className="rt-code">{course.code}</span></td>
+                                <td><span className="rt-title">{course.title}</span></td>
+                                <td>
+                                  <div className="rt-tags">
+                                    {course.interests.map((tag) => <span key={tag} className="rt-tag">{tag}</span>)}
+                                  </div>
+                                </td>
+                                <td><span className="rt-time">{course.meetDays} · {formatTimeRange(course.startTime, course.endTime)}</span></td>
+                                <td><span className="rt-location">{formatBuildingLabel(course.building)}{course.room && course.room !== "TBD" ? `, ${course.room}` : ""}</span></td>
+                                <td><span className="rt-instructor">{formatInstructor(course.instructor)}</span></td>
+                              </tr>
+                              {isOpen && (
+                                <tr className="expanded-row">
+                                  <td colSpan={6}>
+                                    <div className="expanded-card-wrap">
+                                      <div className="course-card">
+                                        <div className="card-body">
+                                          <div className="card-top">
+                                            <div>
+                                              <p className="card-college">{getDisplayDepartment(course.department, course.code.split(" ")[0])}</p>
+                                              <span className="card-dept">{getDisplayCollege(course)}</span>
+                                            </div>
+                                            <span className="card-time-badge">{course.meetDays} · {formatTimeRange(course.startTime, course.endTime)}</span>
+                                          </div>
+                                          <h2 className="card-title">{course.title}</h2>
+                                          <p className="card-meta">{course.code} · <InstructorWithRmpLink instructor={course.instructor} /></p>
+                                          <div className="card-divider" />
+                                          <div className="card-location"><a href={buildMapsUrl(course.building)} target="_blank" rel="noreferrer">{formatBuildingLabel(course.building)}, Room {course.room}</a></div>
+                                          <p className="card-desc">{stripPrereqText(course.description)}</p>
+                                          <div className="card-tags">{course.interests.map((tag) => <span key={tag} className="card-tag">{tag}</span>)}</div>
+                                        </div>
+                                        <div className="card-actions">
+                                          <button className="btn-secondary" type="button" onClick={(e) => { e.stopPropagation(); setPendingCalendarCourse(course); }}>Add to Calendar</button>
+                                          <button className="btn-primary" type="button" onClick={(e) => { e.stopPropagation(); setCurrentCourse(null); }}>Collapse ↑</button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                              )}
+                            </React.Fragment>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               )}
             </>
