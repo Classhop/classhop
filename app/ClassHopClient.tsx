@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 
 import type { Course, Interest, Semester } from "../lib/types";
@@ -18,15 +18,16 @@ const INTEREST_OPTIONS: Interest[] = [
 
 const EARLIEST_MINUTES = 7 * 60; // 7:00 AM
 const LATEST_MINUTES = 19 * 60; // 7:00 PM
+const LOCKED_WINDOW_MINUTES = 60;
 
 type WeekdayToken = "M" | "T" | "W" | "Tr" | "F";
-type TopTab = "discover" | "saved" | "editor";
+type TopTab = "discover" | "saved" | "search" | "editor";
 
 const WEEKDAY_BUTTONS: { token: WeekdayToken; label: string }[] = [
   { token: "M", label: "M" },
   { token: "T", label: "T" },
   { token: "W", label: "W" },
-  { token: "Tr", label: "Tr" },
+  { token: "Tr", label: "Th" },
   { token: "F", label: "F" }
 ];
 
@@ -70,13 +71,6 @@ function tokenizeMeetDays(meetDays: string): WeekdayToken[] {
 
 function meetDaysIncludes(meetDays: string, day: WeekdayToken): boolean {
   return tokenizeMeetDays(meetDays).includes(day);
-}
-
-function parseTimeToday(time: string): Date {
-  const [hours, minutes] = time.split(":").map(Number);
-  const d = new Date();
-  d.setHours(hours, minutes, 0, 0);
-  return d;
 }
 
 function formatTimeRange(start: string, end: string) {
@@ -146,7 +140,6 @@ function getDisplayDepartment(department: string, subject?: string): string {
     "Development Practice Grad Grp":   "Development Practice",
     "Earth & Planetary Science":       "Earth and Planetary Science",
     "East Asian Lang & Culture":       "East Asian Languages and Cultures",
-    "Electrical Eng & Computer Sci":   "Electrical Engineering and Computer Sciences",
     "Electrical Eng & Computer Sci":   "Electrical Engineering and Computer Sciences",
     "Energy & Resources Group":        "Energy and Resources",
     "Env Sci, Policy, & Mgmt":         "Environmental Science, Policy, and Management",
@@ -560,10 +553,22 @@ function snapToHalfHour(totalMinutes: number): number {
   return total;
 }
 
-function minutesToTime24(totalMinutes: number): string {
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
-  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+/** Minutes since midnight from catalog "HH:MM". */
+function timeStringToMinutes(time: string): number {
+  const [h, m] = time.split(":").map(Number);
+  return h * 60 + m;
+}
+
+/** True if class [cStart, cEnd] overlaps user window [wStart, wEnd), all in minutes on the same nominal day. */
+function courseOverlapsFreeRange(
+  courseStart: string,
+  courseEnd: string,
+  wStartMin: number,
+  wEndMin: number
+): boolean {
+  const cStart = timeStringToMinutes(courseStart);
+  const cEnd = timeStringToMinutes(courseEnd);
+  return cStart < wEndMin && cEnd > wStartMin;
 }
 
 function formatMinutes12h(totalMinutes: number): string {
@@ -573,6 +578,205 @@ function formatMinutes12h(totalMinutes: number): string {
   let hours12 = hours24 % 12;
   if (hours12 === 0) hours12 = 12;
   return `${hours12}:${String(minutes).padStart(2, "0")} ${suffix}`;
+}
+
+function minutesToBarPercent(m: number, min: number, max: number): number {
+  if (max <= min) return 0;
+  return ((m - min) / (max - min)) * 100;
+}
+
+type TimeRangeBarProps = {
+  startMin: number;
+  endMin: number;
+  onStartChange: (snapped: number) => void;
+  onEndChange: (snapped: number) => void;
+  min: number;
+  max: number;
+  formatLabel: (m: number) => string;
+  endLocked: boolean;
+};
+
+function TimeRangeBar({
+  startMin,
+  endMin,
+  onStartChange,
+  onEndChange,
+  min,
+  max,
+  formatLabel,
+  endLocked
+}: TimeRangeBarProps) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [drag, setDrag] = useState<"start" | "end" | "range" | null>(null);
+  const dragRangeAnchor = useRef<{ clientX: number; startMin: number; endMin: number } | null>(null);
+
+  const toSnappedFromClientX = useCallback(
+    (clientX: number) => {
+      const el = trackRef.current;
+      if (!el) return null;
+      const rect = el.getBoundingClientRect();
+      const t = (clientX - rect.left) / Math.max(1, rect.width);
+      const raw = min + t * (max - min);
+      return snapToHalfHour(Math.max(min, Math.min(max, raw)));
+    },
+    [min, max]
+  );
+
+  const startRef = useRef(startMin);
+  const endRef = useRef(endMin);
+  startRef.current = startMin;
+  endRef.current = endMin;
+
+  const onBarPointerDown = (e: React.PointerEvent) => {
+    if ((e.target as HTMLElement).closest(".dual-range-thumb")) return;
+    if ((e.target as HTMLElement).closest(".dual-range-fill")) {
+      dragRangeAnchor.current = { clientX: e.clientX, startMin, endMin };
+      setDrag("range");
+      return;
+    }
+    const snapped = toSnappedFromClientX(e.clientX);
+    if (snapped === null) return;
+    const distS = Math.abs(snapped - startMin);
+    const distE = Math.abs(snapped - endMin);
+    if (distS <= distE) {
+      if (endLocked) {
+        onStartChange(Math.max(min, Math.min(snapped, max - LOCKED_WINDOW_MINUTES)));
+      } else {
+        onStartChange(Math.max(min, Math.min(snapped, endMin - 30)));
+      }
+    } else {
+      onEndChange(Math.min(max, Math.max(snapped, startMin + 30)));
+    }
+  };
+
+  useEffect(() => {
+    if (!drag) return;
+    const onMove = (e: PointerEvent) => {
+      if (drag === "range") {
+        const anchor = dragRangeAnchor.current;
+        if (!anchor) return;
+        const el = trackRef.current;
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        const pxPerMin = rect.width / Math.max(1, max - min);
+        const deltaPx = e.clientX - anchor.clientX;
+        const rangeWindow = anchor.endMin - anchor.startMin;
+        const rawStart = anchor.startMin + deltaPx / pxPerMin;
+        const newStart = Math.max(min, Math.min(snapToHalfHour(rawStart), max - rangeWindow));
+        const newEnd = newStart + rangeWindow;
+        onStartChange(newStart);
+        onEndChange(newEnd);
+        return;
+      }
+      const s = toSnappedFromClientX(e.clientX);
+      if (s === null) return;
+      if (drag === "start") {
+        if (endLocked) {
+          onStartChange(Math.max(min, Math.min(s, max - LOCKED_WINDOW_MINUTES)));
+        } else {
+          onStartChange(Math.max(min, Math.min(s, endRef.current - 30)));
+        }
+      } else {
+        onEndChange(Math.min(max, Math.max(s, startRef.current + 30)));
+      }
+    };
+    const onUp = () => { dragRangeAnchor.current = null; setDrag(null); };
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp, true);
+    window.addEventListener("pointercancel", onUp, true);
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp, true);
+      window.removeEventListener("pointercancel", onUp, true);
+    };
+  }, [drag, endLocked, min, max, onStartChange, onEndChange, toSnappedFromClientX]);
+
+  const pct0 = minutesToBarPercent(startMin, min, max);
+  const pct1 = minutesToBarPercent(endMin, min, max);
+  const w = Math.max(0, pct1 - pct0);
+
+  return (
+    <div className="time-range-dual">
+      <div
+        className="dual-range"
+        ref={trackRef}
+        onPointerDown={onBarPointerDown}
+        style={{ touchAction: "none" }}
+        role="group"
+        aria-label="Free time window"
+      >
+        <div className="dual-range-bg" />
+        <div
+          className="dual-range-fill"
+          style={{ left: `${pct0}%`, width: `${w}%` }}
+        />
+        <button
+          type="button"
+          className="dual-range-thumb dual-range-thumb--start"
+          style={{ left: `${pct0}%` }}
+          aria-label="Window starts at"
+          aria-valuemin={min}
+          aria-valuemax={endLocked ? max - LOCKED_WINDOW_MINUTES : endMin - 30}
+          aria-valuenow={startMin}
+          role="slider"
+          onKeyDown={(e) => {
+            if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
+              e.preventDefault();
+              onStartChange(Math.max(min, startMin - 30));
+            }
+            if (e.key === "ArrowRight" || e.key === "ArrowUp") {
+              e.preventDefault();
+              onStartChange(
+                endLocked
+                  ? Math.min(startMin + 30, max - LOCKED_WINDOW_MINUTES)
+                  : Math.min(startMin + 30, endMin - 30)
+              );
+            }
+          }}
+          onPointerDown={(e) => {
+            e.stopPropagation();
+            (e.currentTarget as HTMLButtonElement).focus();
+            setDrag("start");
+          }}
+        />
+        <button
+          type="button"
+          className={`dual-range-thumb dual-range-thumb--end${endLocked ? " dual-range-thumb--end-locked" : ""}`}
+          style={{ left: `${pct1}%` }}
+          aria-label="Window ends at"
+          title={
+            endLocked
+              ? "Drag past 1 hour to plan a longer window"
+              : "Window end"
+          }
+          aria-valuemin={startMin + 30}
+          aria-valuemax={max}
+          aria-valuenow={endMin}
+          role="slider"
+          onKeyDown={(e) => {
+            if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
+              e.preventDefault();
+              onEndChange(Math.max(endMin - 30, startMin + 30));
+            }
+            if (e.key === "ArrowRight" || e.key === "ArrowUp") {
+              e.preventDefault();
+              onEndChange(Math.min(max, endMin + 30));
+            }
+          }}
+          onPointerDown={(e) => {
+            e.stopPropagation();
+            (e.currentTarget as HTMLButtonElement).focus();
+            setDrag("end");
+          }}
+        />
+      </div>
+      <p className="time-range-readout-line" aria-hidden>
+        <span className="time-range-time">{formatLabel(startMin)}</span>
+        <span className="time-range-sep">—</span>
+        <span className="time-range-time">{formatLabel(endMin)}</span>
+      </p>
+    </div>
+  );
 }
 
 export function ClassHopClient({ initialCourses }: { initialCourses: Course[] }) {
@@ -589,9 +793,20 @@ export function ClassHopClient({ initialCourses }: { initialCourses: Course[] })
   const [semester, setSemester] = useState<Semester>("Spring 2026");
   const [topTab, setTopTab] = useState<TopTab>("discover");
   const [selectedWeekday, setSelectedWeekday] = useState<WeekdayToken>(getDefaultWeekdayToken);
-  const [selectedMinutes, setSelectedMinutes] = useState(getDefaultMinutes);
+  const [freeRangeStartMinutes, setFreeRangeStartMinutes] = useState(getDefaultMinutes);
+  const [freeRangeEndMinutes, setFreeRangeEndMinutes] = useState(() =>
+    Math.min(LATEST_MINUTES, getDefaultMinutes() + LOCKED_WINDOW_MINUTES)
+  );
+  const [freeRangeUnlocked, setFreeRangeUnlocked] = useState(false);
   const [usingNow, setUsingNow] = useState(true);
+  const freeRangeUnlockedRef = useRef(freeRangeUnlocked);
+  const freeRangeStartRef = useRef(freeRangeStartMinutes);
+  freeRangeUnlockedRef.current = freeRangeUnlocked;
+  freeRangeStartRef.current = freeRangeStartMinutes;
   const [selectedInterests, setSelectedInterests] = useState<Interest[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [expandedCodes, setExpandedCodes] = useState<Set<string>>(new Set());
+  const [currentSearchSection, setCurrentSearchSection] = useState<string | null>(null);
   const [currentCourse, setCurrentCourse] = useState<Course | null>(null);
   const [lastPool, setLastPool] = useState<Course[]>([]);
   const [page, setPage] = useState(0);
@@ -601,15 +816,21 @@ export function ClassHopClient({ initialCourses }: { initialCourses: Course[] })
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
   const [pendingCalendarCourse, setPendingCalendarCourse] = useState<Course | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [savedIds, setSavedIds] = useState<Set<string>>(() => {
-    if (typeof window === "undefined") return new Set<string>();
-    try {
-      const raw = localStorage.getItem("classhop-saved");
-      return new Set<string>(raw ? JSON.parse(raw) : []);
-    } catch { return new Set<string>(); }
-  });
+  const [savedIds, setSavedIds] = useState<Set<string>>(() => new Set<string>());
+  const savedStorageReady = useRef(false);
 
   useEffect(() => {
+    try {
+      const raw = localStorage.getItem("classhop-saved");
+      setSavedIds(new Set<string>(raw ? JSON.parse(raw) : []));
+    } catch {
+      setSavedIds(new Set<string>());
+    }
+    savedStorageReady.current = true;
+  }, []);
+
+  useEffect(() => {
+    if (!savedStorageReady.current) return;
     localStorage.setItem("classhop-saved", JSON.stringify([...savedIds]));
   }, [savedIds]);
 
@@ -627,18 +848,49 @@ export function ClassHopClient({ initialCourses }: { initialCourses: Course[] })
     });
   }
 
-  const selectedTime24 = useMemo(
-    () => minutesToTime24(selectedMinutes),
-    [selectedMinutes]
-  );
+  const freeRangeValid = freeRangeStartMinutes < freeRangeEndMinutes;
 
-  function shouldUseNow(weekday: WeekdayToken, minutes: number): boolean {
-    return weekday === getDefaultWeekdayToken() && minutes === getDefaultMinutes();
+  function shouldUseNow(weekday: WeekdayToken, startMin: number): boolean {
+    return weekday === getDefaultWeekdayToken() && startMin === getDefaultMinutes();
   }
 
+  const applyFreeRangeStart = useCallback(
+    (snapped: number) => {
+      if (!freeRangeUnlockedRef.current) {
+        const s = Math.max(
+          EARLIEST_MINUTES,
+          Math.min(snapped, LATEST_MINUTES - LOCKED_WINDOW_MINUTES)
+        );
+        const e = Math.min(LATEST_MINUTES, s + LOCKED_WINDOW_MINUTES);
+        setFreeRangeStartMinutes(s);
+        setFreeRangeEndMinutes(e);
+        setUsingNow(shouldUseNow(selectedWeekday, s));
+        return;
+      }
+      setFreeRangeStartMinutes(snapped);
+      setFreeRangeEndMinutes((end) => (end <= snapped ? Math.min(LATEST_MINUTES, snapped + 30) : end));
+      setUsingNow(shouldUseNow(selectedWeekday, snapped));
+    },
+    [selectedWeekday]
+  );
+
+  const applyFreeRangeEnd = useCallback((snapped: number) => {
+    if (!freeRangeUnlockedRef.current) {
+      if (snapped <= freeRangeStartRef.current + LOCKED_WINDOW_MINUTES) {
+        return;
+      }
+      setFreeRangeUnlocked(true);
+    }
+    setFreeRangeEndMinutes(snapped);
+    setFreeRangeStartMinutes((start) => (snapped <= start ? Math.max(EARLIEST_MINUTES, snapped - 30) : start));
+    setUsingNow(false);
+  }, []);
+
   const filteredCourses = useMemo(() => {
-    if (!selectedTime24) return [];
-    const selectedMoment = parseTimeToday(selectedTime24);
+    if (!freeRangeValid) return [];
+    let wStart = freeRangeStartMinutes;
+    let wEnd = freeRangeEndMinutes;
+    if (wStart > wEnd) [wStart, wEnd] = [wEnd, wStart];
     return allCourses.filter((course) => {
       if (getCourseSemester(course) !== semester) return false;
       if (!meetDaysIncludes(course.meetDays, selectedWeekday)) return false;
@@ -646,19 +898,17 @@ export function ClassHopClient({ initialCourses }: { initialCourses: Course[] })
         const intersects = course.interests.some((i) => selectedInterests.includes(i));
         if (!intersects) return false;
       }
-      const cStart = parseTimeToday(course.startTime);
-      const cEnd = parseTimeToday(course.endTime);
-      const startMatches =
-        cStart.getHours() === selectedMoment.getHours() &&
-        cStart.getMinutes() === selectedMoment.getMinutes();
-      const inSession =
-        selectedMoment.getTime() >= cStart.getTime() &&
-        selectedMoment.getTime() < cEnd.getTime();
-      const hasThirtyMinutesLeft =
-        inSession && cEnd.getTime() - selectedMoment.getTime() >= 30 * 60 * 1000;
-      return startMatches || hasThirtyMinutesLeft;
+      return courseOverlapsFreeRange(course.startTime, course.endTime, wStart, wEnd);
     });
-  }, [allCourses, selectedTime24, selectedInterests, semester, selectedWeekday]);
+  }, [
+    allCourses,
+    freeRangeEndMinutes,
+    freeRangeStartMinutes,
+    freeRangeValid,
+    selectedInterests,
+    semester,
+    selectedWeekday
+  ]);
 
   const uniqueCourseCount = useMemo(
     () => new Set(allCourses.map((course) => course.code)).size,
@@ -679,25 +929,66 @@ export function ClassHopClient({ initialCourses }: { initialCourses: Course[] })
     );
   }, [dayMatchedCourses, selectedInterests]);
 
+  const searchGroups = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return [];
+    const matched = allCourses.filter((c) => {
+      if (getCourseSemester(c) !== semester) return false;
+      return (
+        c.title.toLowerCase().includes(q) ||
+        c.code.toLowerCase().includes(q) ||
+        c.instructor.toLowerCase().includes(q) ||
+        c.department.toLowerCase().includes(q) ||
+        c.description.toLowerCase().includes(q)
+      );
+    });
+    const map = new Map<string, Course[]>();
+    for (const c of matched) {
+      const key = c.code || c.title;
+      if (!map.has(key)) map.set(key, []);
+      map.get(key)!.push(c);
+    }
+    return Array.from(map.entries()).map(([code, sections]) => ({ code, sections }));
+  }, [searchQuery, allCourses, semester]);
+
+  function toggleExpandCode(code: string, sections: Course[]) {
+    setExpandedCodes((prev) => {
+      const next = new Set(prev);
+      if (next.has(code)) {
+        next.delete(code);
+        setCurrentSearchSection(null);
+      } else {
+        next.add(code);
+        if (sections.length === 1) setCurrentSearchSection(sections[0].id);
+      }
+      return next;
+    });
+  }
+
   function handleNow() {
     const now = new Date();
     const nowMinutes = now.getHours() * 60 + now.getMinutes();
-    let nextMinutes: number;
+    let startM: number;
 
     // If current time is 7:30 PM to 9:00 PM, pin to 7:00 PM.
     if (nowMinutes >= 19 * 60 + 30 && nowMinutes <= 21 * 60) {
-      nextMinutes = LATEST_MINUTES;
+      startM = LATEST_MINUTES;
     } else if (nowMinutes < EARLIEST_MINUTES || nowMinutes > LATEST_MINUTES) {
       // Any other out-of-range time maps to 7:00 AM.
-      nextMinutes = EARLIEST_MINUTES;
+      startM = EARLIEST_MINUTES;
     } else {
-      nextMinutes = snapToHalfHour(nowMinutes);
-      nextMinutes = Math.max(EARLIEST_MINUTES, Math.min(LATEST_MINUTES, nextMinutes));
+      startM = snapToHalfHour(nowMinutes);
+      startM = Math.max(EARLIEST_MINUTES, Math.min(LATEST_MINUTES, startM));
     }
 
-    setSelectedMinutes(nextMinutes);
-    setSelectedWeekday(getDefaultWeekdayToken());
-    setUsingNow(shouldUseNow(getDefaultWeekdayToken(), nextMinutes));
+    const weekday = getDefaultWeekdayToken();
+    setSelectedWeekday(weekday);
+    setFreeRangeUnlocked(false);
+    startM = Math.min(startM, LATEST_MINUTES - LOCKED_WINDOW_MINUTES);
+    const endM = Math.min(LATEST_MINUTES, startM + LOCKED_WINDOW_MINUTES);
+    setFreeRangeStartMinutes(startM);
+    setFreeRangeEndMinutes(endM);
+    setUsingNow(shouldUseNow(weekday, startM));
   }
 
   function toggleInterest(interest: Interest) {
@@ -752,9 +1043,18 @@ export function ClassHopClient({ initialCourses }: { initialCourses: Course[] })
     setCurrentCourse(null);
     setHasSearched(true);
     setPage(0);
-    setLastPool(
-      selectedInterests.length === 0 ? splatterPool(filteredCourses) : filteredCourses
-    );
+    const shuffled = [...filteredCourses].sort(() => Math.random() - 0.5);
+    if (selectedInterests.length > 0) {
+      shuffled.sort((a, b) => {
+        const aCount = selectedInterests.filter((i) => a.interests.includes(i)).length;
+        const bCount = selectedInterests.filter((i) => b.interests.includes(i)).length;
+        if (bCount !== aCount) return bCount - aCount;
+        const aPure = a.interests.every((i) => selectedInterests.includes(i)) ? 0 : 1;
+        const bPure = b.interests.every((i) => selectedInterests.includes(i)) ? 0 : 1;
+        return aPure - bPure;
+      });
+    }
+    setLastPool(shuffled);
   }
 
   function handleDownloadDatabase() {
@@ -769,15 +1069,30 @@ export function ClassHopClient({ initialCourses }: { initialCourses: Course[] })
         .redesign-root nav{display:flex;align-items:center;justify-content:space-between;padding:1.125rem 2.5rem;border-bottom:1px solid var(--border);background:var(--cream);position:sticky;top:0;z-index:10}
         .logo{display:flex;align-items:center;gap:.5rem;text-decoration:none}.logo-mark{width:32px;height:32px;background:var(--navy);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center}.logo-wordmark{font-weight:500;font-size:1rem;color:var(--navy);letter-spacing:-.01em}
         .header-right{display:flex;align-items:center;gap:.75rem}
-        .top-tabs{display:flex;align-items:center;gap:2px;border:1px solid var(--border);border-radius:var(--radius-pill);background:rgba(0,40,85,.03);padding:3px}
-        .top-tab-btn{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.04em;color:var(--muted);background:transparent;border:none;border-radius:var(--radius-pill);padding:.3rem .75rem;cursor:pointer}
-        .top-tab-btn.active{background:#fff;color:var(--text);box-shadow:0 1px 3px rgba(0,40,85,.1)}
+        .top-tabs{display:flex;align-items:center;gap:.4rem}
+        .top-tab-btn{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.04em;color:var(--muted);background:transparent;border:1px solid transparent;border-radius:var(--radius-pill);padding:.3rem .75rem;cursor:pointer}
+        .top-tab-btn:hover{border-color:var(--border);color:var(--text)}
+        .top-tab-btn.active{background:var(--navy);color:var(--gold);border-color:var(--navy)}
         .semester-toggle{display:flex;align-items:center;gap:2px;border:1px solid var(--border);border-radius:var(--radius-pill);background:rgba(0,40,85,.03);padding:3px}
         .semester-btn{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.04em;color:var(--muted);background:transparent;border:none;border-radius:var(--radius-pill);padding:.3rem .75rem;cursor:pointer}.semester-btn.active{background:#fff;color:var(--text);box-shadow:0 1px 3px rgba(0,40,85,.1)}
-        .redesign-main{flex:1;max-width:680px;width:100%;margin:0 auto;padding:0.5rem 2rem 6rem}.eyebrow{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:1.5rem}
+        .redesign-main{flex:1;max-width:680px;width:100%;margin:0 auto;padding:0.5rem 2rem 6rem;overflow-x:hidden}.eyebrow{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:1.5rem}
         .hero-title{font-family:var(--font-display);font-size:clamp(2.6rem,6vw,3.75rem);font-weight:300;line-height:1.08;color:var(--navy);letter-spacing:-.02em;margin-bottom:.75rem}.subheadline{font-family:var(--font-display);font-size:clamp(1.3rem,3vw,1.6rem);font-weight:300;font-style:italic;color:var(--gold-dim);margin-bottom:1.75rem}.description{font-size:1rem;line-height:1.75;color:var(--muted);max-width:520px;margin-bottom:3.5rem}
-        .divider{height:1px;background:var(--border);margin:3rem 0}.form-section{margin-bottom:2.5rem}.section-label{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem}.step-number{font-family:var(--font-mono);font-size:.65rem;color:var(--gold-dim);background:rgba(253,181,21,.12);border:1px solid rgba(253,181,21,.3);border-radius:var(--radius-pill);padding:.2rem .6rem;letter-spacing:.06em}.section-title{font-family:var(--font-display);font-size:1.35rem;font-weight:300;letter-spacing:-.01em;text-transform:none;color:var(--navy)}
-        .when-section{display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto;column-gap:1.25rem;row-gap:.75rem}.when-section .section-label{grid-column:1;grid-row:1;align-self:center;margin-bottom:0}.when-section .time-row{grid-column:1/-1;grid-row:2}.when-section .day-strip{grid-column:2;grid-row:1;align-self:center}
+        .divider{height:1px;background:var(--border);margin:3rem 0}.form-section{margin-bottom:2.5rem}.section-label{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem}.step-number{font-family:var(--font-mono);font-size:.65rem;color:var(--gold-dim);background:rgba(253,181,21,.12);border:1px solid rgba(253,181,21,.3);border-radius:var(--radius-pill);padding:.2rem .6rem;letter-spacing:.06em}.section-title{font-family:var(--font-display);font-size:1.6rem;font-weight:300;letter-spacing:-.01em;text-transform:none;color:var(--navy)}
+        .when-section{display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto;column-gap:1.25rem;row-gap:.75rem}.when-section .section-label{grid-column:1;grid-row:1;align-self:center;margin-bottom:0}.when-section .time-range-block{grid-column:1/-1;grid-row:2}.when-section .day-strip{grid-column:2;grid-row:1;align-self:center}
+        .time-range-block{display:flex;align-items:flex-start;gap:.85rem;width:100%;min-width:0;flex:1}
+        .time-range-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:.35rem}
+        .time-range-now{flex:0 0 auto;align-self:flex-start;margin-top:2px}
+        .dual-range-thumb--end-locked{box-shadow:0 0 0 1px rgba(42,143,92,.4)}
+        .time-range-dual{flex:1;min-width:0;display:flex;flex-direction:column;gap:.45rem}
+        .dual-range{position:relative;height:56px;width:100%;align-self:stretch;cursor:pointer}
+        .dual-range-bg{position:absolute;left:0;right:0;top:50%;height:10px;margin-top:-5px;border-radius:999px;background:rgba(0,40,85,.12);pointer-events:none}
+        .dual-range-fill{position:absolute;top:50%;height:10px;margin-top:-5px;border-radius:999px;background:#2a8f5c;min-width:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.12);cursor:grab;z-index:1}
+        .dual-range-thumb{position:absolute;top:50%;z-index:2;width:18px;height:18px;border-radius:50%;background:var(--navy);border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.28);transform:translate(-50%,-50%);cursor:grab;padding:0}
+        .dual-range-thumb--end{z-index:3}
+        .dual-range-thumb:hover,.dual-range-thumb:focus-visible{z-index:4;outline:2px solid rgba(0,40,85,.2);outline-offset:2px}
+        .dual-range-thumb:active{cursor:grabbing}
+        .time-range-readout-line{margin:0;font-family:var(--font-mono);font-size:.85rem;letter-spacing:.04em;color:var(--navy);background:rgba(0,40,85,.06);border:1px solid rgba(0,40,85,.14);border-radius:var(--radius-pill);padding:.3rem .85rem;white-space:nowrap;width:fit-content;align-self:center}
+        .time-range-sep{opacity:0.45;padding:0 .35rem}
         .day-strip{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:.45rem}.day-btn{font-family:var(--font-body);font-size:.9rem;border:1px solid var(--border);background:var(--chip-bg);color:var(--text);padding:.55rem 1rem;border-radius:var(--radius-pill);cursor:pointer}.day-btn.active{background:var(--navy);color:var(--gold);border-color:var(--navy)}
         .time-row{display:flex;align-items:center;gap:.8rem}.time-btn,.chip{font-family:var(--font-body);font-size:.9rem;border:1px solid var(--border);background:var(--chip-bg);color:var(--text);padding:.55rem 1rem;border-radius:var(--radius-pill);cursor:pointer}.time-btn.active,.chip.active{background:var(--navy);color:var(--gold);border-color:var(--navy)}
         .time-slider-wrap{flex:1;display:flex;align-items:center;gap:.75rem;min-width:220px}.time-slider{flex:1;appearance:none;height:6px;border-radius:999px;background:rgba(0,40,85,.15);outline:none}.time-slider::-webkit-slider-thumb{appearance:none;width:16px;height:16px;border-radius:50%;background:var(--navy);border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.25);cursor:pointer}.time-slider::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--navy);border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.25);cursor:pointer}
@@ -824,6 +1139,28 @@ export function ClassHopClient({ initialCourses }: { initialCourses: Course[] })
         .editor-actions{display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;margin-top:1rem}
         .editor-button{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;border-radius:var(--radius-sm);padding:.58rem .95rem;cursor:pointer;color:var(--gold);background:var(--navy);border:1px solid var(--navy)}
         .editor-note{font-size:.82rem;line-height:1.5;color:var(--muted);margin-top:.8rem}
+        .search-input-wrap{margin:1.5rem 0 1rem}
+        .search-input{width:100%;font-family:var(--font-body);font-size:1rem;padding:.75rem 1rem;border:1px solid var(--border);border-radius:var(--radius-md);background:#fff;color:var(--text);outline:none;box-sizing:border-box}
+        .search-input:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(0,40,85,.08)}
+        .search-empty{color:var(--muted);font-size:.9rem;margin-top:1.5rem}
+        .search-groups{display:flex;flex-direction:column;gap:.65rem;margin-top:.75rem}
+        .search-group{border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden;background:#fff}
+        .search-group-header{width:100%;display:flex;align-items:center;gap:.75rem;padding:.85rem 1rem;background:none;border:none;cursor:pointer;text-align:left;position:relative}
+        .search-group-header:hover{background:rgba(0,40,85,.03)}
+        .search-group-title-row{display:flex;align-items:baseline;gap:.5rem;flex:1;flex-wrap:wrap}
+        .search-group-title{font-family:var(--font-display);font-size:1.05rem;font-weight:300;color:var(--navy)}
+        .search-group-code{font-family:var(--font-mono);font-size:.72rem;color:var(--muted);letter-spacing:.04em}
+        .search-group-meta{display:flex;align-items:center;gap:.65rem;flex-shrink:0}
+        .search-group-dept{font-size:.78rem;color:var(--muted)}
+        .search-group-count{font-family:var(--font-mono);font-size:.72rem;color:var(--gold-dim);background:rgba(253,181,21,.1);border:1px solid rgba(253,181,21,.25);border-radius:var(--radius-pill);padding:.1rem .5rem;white-space:nowrap}
+        .search-group-chevron{font-size:.65rem;color:var(--muted);flex-shrink:0}
+        .search-sections{border-top:1px solid var(--border)}
+        .search-section{padding:.75rem 1rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:.75rem;cursor:pointer;flex-wrap:wrap}
+        .search-section:first-child{border-top:none}
+        .search-section:hover{background:rgba(0,40,85,.03)}
+        .search-section-active{background:rgba(0,40,85,.06)}
+        .search-section-instructor{font-size:.88rem;color:var(--text)}
+        .search-section-location{font-family:var(--font-mono);font-size:.75rem;color:var(--muted)}
         .cal-modal-overlay{position:fixed;inset:0;background:rgba(26,22,18,.45);z-index:40;display:flex;align-items:center;justify-content:center;padding:1.25rem}
         .cal-modal{background:#fff;border:1px solid var(--border);border-radius:var(--radius-md);max-width:420px;width:100%;padding:1.5rem 1.75rem;box-shadow:0 12px 40px rgba(0,40,85,.15)}
         .cal-modal h3{font-family:var(--font-display);font-size:1.35rem;font-weight:300;color:var(--navy);margin:0 0 .5rem}
@@ -875,7 +1212,8 @@ export function ClassHopClient({ initialCourses }: { initialCourses: Course[] })
           /* ── Form: time & day ── */
           .when-section{display:flex;flex-direction:column;align-items:flex-start}
           .when-section .section-label{order:1;width:100%}
-          .when-section .time-row{order:2}
+          .when-section .time-range-block{order:2;flex-direction:column;align-items:stretch;gap:.75rem}
+          .time-range-now{align-self:flex-start}
           .when-section .day-strip{order:3;justify-content:center;width:100%}
           .day-btn,.time-btn,.chip{
             font-size:.82rem;
@@ -884,11 +1222,9 @@ export function ClassHopClient({ initialCourses }: { initialCourses: Course[] })
             padding:.58rem .8rem;
           }
           .day-btn{flex:0 0 auto;text-align:center}
-          .time-row{flex-wrap:nowrap;gap:.5rem;width:100%}
           .time-btn{flex:0 0 auto}
-          .time-slider-wrap{flex:1 1 auto;min-width:0;width:100%}
-          .time-slider{width:100%}
-          .time-readout{min-width:56px;font-size:.72rem}
+          .time-range-dual{gap:.35rem}
+          .time-range-readout-line{font-size:.78rem}
           .chips{gap:.4rem}
           .cta-wrapper{margin-top:2rem}
 
@@ -946,27 +1282,10 @@ export function ClassHopClient({ initialCourses }: { initialCourses: Course[] })
               Categories
             </Link>
             <div className="top-tabs">
-              <button
-                className={`top-tab-btn ${topTab === "discover" ? "active" : ""}`}
-                onClick={() => setTopTab("discover")}
-                type="button"
-              >
-                Discover
-              </button>
-              <button
-                className={`top-tab-btn ${topTab === "saved" ? "active" : ""}`}
-                onClick={() => setTopTab("saved")}
-                type="button"
-              >
-                Saved{savedIds.size > 0 && <span className="saved-badge">{savedIds.size}</span>}
-              </button>
-              <button
-                className={`top-tab-btn ${topTab === "editor" ? "active" : ""}`}
-                onClick={() => setTopTab("editor")}
-                type="button"
-              >
-                Editor
-              </button>
+              <button className={`top-tab-btn ${topTab === "discover" ? "active" : ""}`} onClick={() => setTopTab("discover")} type="button">Discover</button>
+              <button className={`top-tab-btn ${topTab === "search" ? "active" : ""}`} onClick={() => setTopTab("search")} type="button">Search</button>
+              <button className={`top-tab-btn ${topTab === "saved" ? "active" : ""}`} onClick={() => setTopTab("saved")} type="button">Saved{savedIds.size > 0 && <span className="saved-badge">{savedIds.size}</span>}</button>
+              <button className={`top-tab-btn ${topTab === "editor" ? "active" : ""}`} onClick={() => setTopTab("editor")} type="button">Editor</button>
             </div>
             <div className="semester-toggle">
               <button className={`semester-btn ${semester === "Spring 2026" ? "active" : ""}`} onClick={() => setSemester("Spring 2026")} type="button">Spring 2026</button>
@@ -986,6 +1305,7 @@ export function ClassHopClient({ initialCourses }: { initialCourses: Course[] })
           <div className={`mobile-menu${menuOpen ? " open" : ""}`}>
             <div className="mobile-menu-inner">
               <button className={`mobile-nav-btn${topTab === "discover" ? " active" : ""}`} type="button" onClick={() => { setTopTab("discover"); setMenuOpen(false); }}>Discover</button>
+              <button className={`mobile-nav-btn${topTab === "search" ? " active" : ""}`} type="button" onClick={() => { setTopTab("search"); setMenuOpen(false); }}>Search</button>
               <button className={`mobile-nav-btn${topTab === "saved" ? " active" : ""}`} type="button" onClick={() => { setTopTab("saved"); setMenuOpen(false); }}>
                 Saved{savedIds.size > 0 && <span className="saved-badge" style={{marginLeft:".5rem"}}>{savedIds.size}</span>}
               </button>
@@ -993,37 +1313,33 @@ export function ClassHopClient({ initialCourses }: { initialCourses: Course[] })
             </div>
           </div>
         </nav>
-        <main className="redesign-main" style={(lastPool.length > 0 || (topTab === "saved" && savedCourses.length > 0)) ? {maxWidth:"none",padding:"2.75rem 2.5rem 6rem"} : undefined}>
+        <main className="redesign-main" style={(lastPool.length > 0 || (topTab === "saved" && savedCourses.length > 0) || topTab === "search") ? {maxWidth:"none",padding:"2.75rem 2.5rem 6rem"} : undefined}>
           {topTab === "discover" ? (
             <>
-              <h1 className="hero-title">Got a Free Hour?</h1>
+              <h1 className="hero-title">Got a Free Window?</h1>
               <p className="subheadline">Wander into a class.</p>
-              <p className="description">Tell us when you&apos;re free and what sparks your curiosity. We&apos;ll find a real Berkeley class happening right now that you can quietly sit in on.</p>
+              <p className="description">Pick a time range you&apos;re free and what sparks your curiosity. We&apos;ll list Berkeley classes that meet during that window on the day you choose.</p>
               <div className="divider" />
               <div className="form-section when-section">
                   <div className="section-label">
                     <span className="step-number">01</span>
                     <span className="section-title">When are you free?{"\u00a0"}</span>
                   </div>
-                  <div className="time-row">
-                  <button className={`time-btn ${usingNow ? "active" : ""}`} type="button" onClick={handleNow}>Now</button>
-                  <div className="time-slider-wrap">
-                    <input
-                      className="time-slider"
-                      type="range"
-                      min={EARLIEST_MINUTES}
-                      max={LATEST_MINUTES}
-                      step={30}
-                      value={selectedMinutes}
-                      onChange={(e) => {
-                        const snapped = snapToHalfHour(Number(e.target.value));
-                        setSelectedMinutes(snapped);
-                        setUsingNow(shouldUseNow(selectedWeekday, snapped));
-                      }}
-                    />
-                    <span className="time-readout">{formatMinutes12h(selectedMinutes)}</span>
+                  <div className="time-range-block">
+                    <button className={`time-btn time-range-now ${usingNow ? "active" : ""}`} type="button" onClick={handleNow}>Now</button>
+                    <div className="time-range-main">
+                      <TimeRangeBar
+                        startMin={freeRangeStartMinutes}
+                        endMin={freeRangeEndMinutes}
+                        onStartChange={applyFreeRangeStart}
+                        onEndChange={applyFreeRangeEnd}
+                        min={EARLIEST_MINUTES}
+                        max={LATEST_MINUTES}
+                        formatLabel={formatMinutes12h}
+                        endLocked={!freeRangeUnlocked}
+                      />
+                    </div>
                   </div>
-                </div>
                   <div className="day-strip">
                     {WEEKDAY_BUTTONS.map(({ token, label }) => (
                       <button
@@ -1032,7 +1348,7 @@ export function ClassHopClient({ initialCourses }: { initialCourses: Course[] })
                         className={`day-btn ${selectedWeekday === token ? "active" : ""}`}
                         onClick={() => {
                           setSelectedWeekday(token);
-                          setUsingNow(shouldUseNow(token, selectedMinutes));
+                          setUsingNow(shouldUseNow(token, freeRangeStartMinutes));
                         }}
                       >
                         {label}
@@ -1049,7 +1365,7 @@ export function ClassHopClient({ initialCourses }: { initialCourses: Course[] })
                 </div>
               </div>
               <div className="cta-wrapper">
-                <button className="cta-btn" type="button" onClick={handleFindClass} disabled={!selectedTime24}><span>Find me a class</span></button>
+                <button className="cta-btn" type="button" onClick={handleFindClass} disabled={!freeRangeValid}><span>Find classes</span></button>
               </div>
               {hasSearched && lastPool.length === 0 && (
                 <div className="prominent-message prominent-message--form">
@@ -1231,6 +1547,127 @@ export function ClassHopClient({ initialCourses }: { initialCourses: Course[] })
                       </tbody>
                     </table>
                   </div>
+                </div>
+              )}
+            </>
+          ) : topTab === "search" ? (
+            <>
+              <h1 className="hero-title">Find a Class</h1>
+              <p className="subheadline">Search by name, instructor, or topic.</p>
+              <div className="search-input-wrap">
+                <input
+                  className="search-input"
+                  type="search"
+                  placeholder="e.g. astronomy, history of art, Dacher Keltner…"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  autoFocus
+                />
+              </div>
+              {searchQuery.trim() && searchGroups.length === 0 && (
+                <p className="search-empty">No classes found for &ldquo;{searchQuery}&rdquo; in {semester}.</p>
+              )}
+              {searchGroups.length > 0 && (
+                <div className="search-groups">
+                  <p className="result-count">{searchGroups.length} {searchGroups.length === 1 ? "course" : "courses"} found</p>
+                  {searchGroups.map(({ code, sections }) => {
+                    const isOpen = expandedCodes.has(code);
+                    const rep = sections[0];
+                    return (
+                      <div key={code} className="search-group">
+                        <button
+                          type="button"
+                          className="search-group-header"
+                          onClick={() => toggleExpandCode(code, sections)}
+                          aria-expanded={isOpen}
+                        >
+                          <div className="search-group-title-row">
+                            <span className="search-group-title">{rep.title}</span>
+                            <span className="search-group-code">{rep.code}</span>
+                          </div>
+                          <div className="search-group-meta">
+                            <span className="search-group-dept">{rep.department}</span>
+                            <span className="search-group-count">{sections.length} {sections.length === 1 ? "section" : "sections"}</span>
+                          </div>
+                          <span className="search-group-chevron">{isOpen ? "▲" : "▼"}</span>
+                        </button>
+                        {isOpen && (
+                          <div className="search-sections">
+                            {sections.length === 1 ? (
+                              <div className="expanded-card-wrap">
+                                <div className="course-card">
+                                  <div className="card-body">
+                                    <div className="card-top">
+                                      <div>
+                                        <p className="card-college">{getDisplayDepartment(sections[0].department, sections[0].code.split(" ")[0])}</p>
+                                        <span className="card-dept">{getDisplayCollege(sections[0])}</span>
+                                      </div>
+                                      <span className="card-time-badge">{sections[0].meetDays} · {formatTimeRange(sections[0].startTime, sections[0].endTime)}</span>
+                                    </div>
+                                    <h2 className="card-title">{sections[0].title}</h2>
+                                    <p className="card-meta">{sections[0].code} · <InstructorWithRmpLink instructor={sections[0].instructor} /></p>
+                                    <div className="card-divider" />
+                                    <div className="card-location"><a href={buildMapsUrl(sections[0].building)} target="_blank" rel="noreferrer">{formatBuildingLabel(sections[0].building)}, Room {sections[0].room}</a></div>
+                                    <p className="card-desc">{stripPrereqText(sections[0].description)}</p>
+                                    <div className="card-tags">{sections[0].interests.map((tag) => <span key={tag} className="card-tag">{tag}</span>)}</div>
+                                  </div>
+                                  <div className="card-actions">
+                                    <button className="btn-secondary" type="button" onClick={(e) => toggleSave(sections[0].id, e)}>
+                                      <span style={{fontSize:"1.1rem",lineHeight:1,marginRight:".3rem"}}>{savedIds.has(sections[0].id) ? "★" : "☆"}</span>{savedIds.has(sections[0].id) ? "Saved" : "Save"}
+                                    </button>
+                                    <button className="btn-secondary" type="button" onClick={(e) => { e.stopPropagation(); setPendingCalendarCourse(sections[0]); }}>Add to Calendar</button>
+                                    <button className="btn-primary" type="button" onClick={(e) => { e.stopPropagation(); toggleExpandCode(code, sections); }}>Collapse ↑</button>
+                                  </div>
+                                </div>
+                              </div>
+                            ) : sections.map((sec) => {
+                              const secOpen = currentSearchSection === sec.id;
+                              return (
+                                <React.Fragment key={sec.id}>
+                                  <div
+                                    className={`search-section${secOpen ? " search-section-active" : ""}`}
+                                    onClick={() => setCurrentSearchSection(secOpen ? null : sec.id)}
+                                  >
+                                    <span className="card-time-badge">{sec.meetDays} · {formatTimeRange(sec.startTime, sec.endTime)}</span>
+                                    <span className="search-section-instructor">{sec.instructor}</span>
+                                    <span className="search-section-location">{formatBuildingLabel(sec.building)}{sec.room && sec.room !== "TBD" ? `, ${sec.room}` : ""}</span>
+                                  </div>
+                                  {secOpen && (
+                                    <div className="expanded-card-wrap">
+                                      <div className="course-card">
+                                        <div className="card-body">
+                                          <div className="card-top">
+                                            <div>
+                                              <p className="card-college">{getDisplayDepartment(sec.department, sec.code.split(" ")[0])}</p>
+                                              <span className="card-dept">{getDisplayCollege(sec)}</span>
+                                            </div>
+                                            <span className="card-time-badge">{sec.meetDays} · {formatTimeRange(sec.startTime, sec.endTime)}</span>
+                                          </div>
+                                          <h2 className="card-title">{sec.title}</h2>
+                                          <p className="card-meta">{sec.code} · <InstructorWithRmpLink instructor={sec.instructor} /></p>
+                                          <div className="card-divider" />
+                                          <div className="card-location"><a href={buildMapsUrl(sec.building)} target="_blank" rel="noreferrer">{formatBuildingLabel(sec.building)}, Room {sec.room}</a></div>
+                                          <p className="card-desc">{stripPrereqText(sec.description)}</p>
+                                          <div className="card-tags">{sec.interests.map((tag) => <span key={tag} className="card-tag">{tag}</span>)}</div>
+                                        </div>
+                                        <div className="card-actions">
+                                          <button className="btn-secondary" type="button" onClick={(e) => toggleSave(sec.id, e)}>
+                                            <span style={{fontSize:"1.1rem",lineHeight:1,marginRight:".3rem"}}>{savedIds.has(sec.id) ? "★" : "☆"}</span>{savedIds.has(sec.id) ? "Saved" : "Save"}
+                                          </button>
+                                          <button className="btn-secondary" type="button" onClick={(e) => { e.stopPropagation(); setPendingCalendarCourse(sec); }}>Add to Calendar</button>
+                                          <button className="btn-primary" type="button" onClick={(e) => { e.stopPropagation(); setCurrentSearchSection(null); }}>Collapse ↑</button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )}
+                                </React.Fragment>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </>
