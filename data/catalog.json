@@ -10132,17 +10132,6 @@
     "description": "The goal of this course is for the students to understand the language and culture required to communicate effectively in Japanese. Some of the cultural aspects covered are; geography, speech style, technology, sports, food, and religion. Through the final project, students will learn how to discuss social issues and their potential solutions. In order to achieve these goals, students will learn how to integrate the basic linguistics knowledge they acquired in J1, as well as study new structures and vocabulary. An increasing amount of reading and writing, including approximately 200 new kanji, will also be required."
   },
   {
-    "id": "NEU-198",
-    "subject": "NEU",
-    "courseNumber": "198",
-    "title": "Directed Group Study",
-    "department": "Neuroscience",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Lectures and small group discussions focusing on topics of interest, varying from semester to semester. "
-  },
-  {
     "id": "PHYSICS-88",
     "subject": "PHYSICS",
     "courseNumber": "88",
@@ -10210,17 +10199,6 @@
       "Business & Economics"
     ],
     "description": "Introduction to construction engineering and field operations. The construction industry, construction methods and practice, productivity improvement, equipment selection, site layout formwork, erection of steel and concrete structures. Labs demonstrate the concepts covered. Field trips to local construction projects. "
-  },
-  {
-    "id": "COGSCI-198",
-    "subject": "COGSCI",
-    "courseNumber": "198",
-    "title": "Directed Group Study",
-    "department": "Interdisc Social Science Pgms",
-    "interests": [
-      "Society & Politics"
-    ],
-    "description": "Seminar for the group study of selected topics. Topics may be initated by students subject to the approval of the major advisor."
   },
   {
     "id": "ECON-215B",
@@ -10421,17 +10399,6 @@
     "description": "This course deals with the occupation of the Netherlands by Nazi Germany in World War II and the Holocaust, with a special focus on the Anne Frank's diary. We will discuss literature, film and historiography with a focus on anti-Semitism, collaboration and resistance as well as the postwar discussion on guilt and responsibility. All materials will be in English, no knowledge of Dutch is required."
   },
   {
-    "id": "ENGLISH-198",
-    "subject": "ENGLISH",
-    "courseNumber": "198",
-    "title": "Directed Group Study",
-    "department": "English",
-    "interests": [
-      "Arts & Design"
-    ],
-    "description": "Enrollment is restricted by university regulations. Group study in a field that shall not coincide with that of any regular course and shall be specific enough to enable students to write essays based upon their studies."
-  },
-  {
     "id": "ENGLISH-45A",
     "subject": "ENGLISH",
     "courseNumber": "45A",
@@ -10583,28 +10550,6 @@
     "description": "Introduction to materials and methods of reinforced concrete design and construction; behavior and design of reinforced concrete beams and one-way slabs considering deflections, moment, shear, and reinforcement development requirements; behavior and design of columns; design of spread footings; design of earthquake-resistant structures; laboratory sessions to illustrate member behavior, to solve problem sets, and to develop and present the preliminary designs for a design project.  "
   },
   {
-    "id": "DESINV-98",
-    "subject": "DESINV",
-    "courseNumber": "98",
-    "title": "Directed Group Study for Undergraduates",
-    "department": "Design Innovation",
-    "interests": [
-      "Business & Economics"
-    ],
-    "description": "Directed group study on various topics in design innovation."
-  },
-  {
-    "id": "ECON-198",
-    "subject": "ECON",
-    "courseNumber": "198",
-    "title": "Directed Group Study",
-    "department": "Economics",
-    "interests": [
-      "Business & Economics"
-    ],
-    "description": "Written proposal must be approved by Department Chair. Seminars for the group study of selected topics, which will vary from year to year. Topics may be initiated by students."
-  },
-  {
     "id": "ECON-240B",
     "subject": "ECON",
     "courseNumber": "240B",
@@ -10637,17 +10582,6 @@
       "History & Culture"
     ],
     "description": "Historical survey of literature in English: The late-17th through the mid-19th century."
-  },
-  {
-    "id": "ENGLISH-98",
-    "subject": "ENGLISH",
-    "courseNumber": "98",
-    "title": "Directed Group Study for Freshmen and Sophomores",
-    "department": "English",
-    "interests": [
-      "Arts & Design"
-    ],
-    "description": "Group study in a field that may not coincide with that of any regular course and must be specific enough to enable students to write essays based upon their studies."
   },
   {
     "id": "INFO-153B",
@@ -10908,17 +10842,6 @@
       "Tech & Engineering"
     ],
     "description": "Application of the concepts and methods of probability theory and statistical inference to CEE problems and data; graphical data analysis and sampling; elements of set theory; elements of probability theory; random variables and expectation; simulation; statistical inference. Use of computer programming languages for analysis of CEE-related data and problems. The course also introduces the student to various domains of uncertainty analysis in CEE. "
-  },
-  {
-    "id": "COLWRIT-98",
-    "subject": "COLWRIT",
-    "courseNumber": "98",
-    "title": "Directed Group Study",
-    "department": "College Writing Programs",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Supervised seminar for group study of selected topics."
   },
   {
     "id": "CYPLAN-116",
@@ -11523,18 +11446,6 @@
     "description": "A seminar for upper division music majors and other prepared students by permission of the instructor. Topics will change each semester but will always concentrate on a selected musical practice from an ethnomusicological perspective. The course provides students with an opportunity to go deeply into one subject, to discuss their ideas in a seminar setting, and to carry out a substantial independent research project."
   },
   {
-    "id": "PBHLTH-198",
-    "subject": "PBHLTH",
-    "courseNumber": "198",
-    "title": "Directed Group Study",
-    "department": "School of Public Health",
-    "interests": [
-      "Health & Environment",
-      "Science & Nature"
-    ],
-    "description": "This DeCal is an interactive, interdisciplinary Decal focusing broadly on problems challenging local and global healthcare. Course topics will include an overview of healthcare in America and healthcare internationally, an introduction to analyzing and mapping public health data, climate change’s connection to public health, etc. In addition to introducing students to a wide array of public health issues, we will also dive into some of the solutions that have been implemented and will primarily analyze policies that have made a difference and bioengineering applications as well to share with the students. The course will include collaborations with the MRI organization on campus for the field study portion in which students will have the opportunity to volunteer at medical surplus redistribution organizations if they wish to do so to take their learnings beyond the classroom. The class itself will include guest lecturers coming in and is centered to be discussion and seminar-based."
-  },
-  {
     "id": "PLANTBI-C103",
     "subject": "PLANTBI",
     "courseNumber": "C103",
@@ -12024,17 +11935,6 @@
     "description": "This course will help students develop musical skills through sightsinging, score reading, and piano harmony, acquiring confidence with music that has chromaticism, modulations, meter changes, and contemporary influences."
   },
   {
-    "id": "MUSIC-98",
-    "subject": "MUSIC",
-    "courseNumber": "98",
-    "title": "Directed Group Study for Freshmen and Sophomores",
-    "department": "Music",
-    "interests": [
-      "Arts & Design"
-    ],
-    "description": "Group study in a field that may not coincide with that of any regular course. See the Introduction to Courses and Curricula section of the General Catalog for enrollment restrictions."
-  },
-  {
     "id": "PERSIAN-1B",
     "subject": "PERSIAN",
     "courseNumber": "1B",
@@ -12057,18 +11957,6 @@
     "description": "This course examines how institutions, ideologies, and social actors have shaped political and economic opportunity in the United States from the colonial era to the present. Through interdisciplinary readings and collaborative projects, students explore how American capitalism has simultaneously opened and obstructed pathways to opportunity—especially for marginalized communities. The course interrogates the enduring effects of systemic discrimination on social mobility and highlights how communities have resisted exclusion and demanded change. Students will build skills in research, public speaking, teamwork, and critical analysis as they challenge dominant narratives and develop solutions to contemporary inequalities."
   },
   {
-    "id": "POLECON-198",
-    "subject": "POLECON",
-    "courseNumber": "198",
-    "title": "Directed Group Study",
-    "department": "Interdisc Social Science Pgms",
-    "interests": [
-      "Business & Economics",
-      "Society & Politics"
-    ],
-    "description": "This course explores how non-capitalist economic structures can function in practice by examining real-world examples such as community land trusts, worker cooperatives, public finance systems, and alternative forms of exchange. Through these cases, students will investigate how communities, often those excluded from or exploited by mainstream capitalist systems, have come together to reclaim land, resources, and wealth, to reimagine what equitable and sustainable economic life can look like. The course examines these initiatives not only as economic experiments but as movements for dignity, self-determination, and justice. Students will also develop practical skills essential to the success of such systems, including group decision-making, stakeholder balancing, empathy, and effective communication. \n\nFitting at the intersection of economics, politics, urban studies, and community development, this course complements theory-based classes by focusing on applied, community-driven approaches to economic transformation. This class is largely structured to teach using story telling, discussions, and group activities to help foster learning through experiences rather than strictly lectures. It is aimed at students who want to think creatively about organizing economies around care, equity, and collaboration rather than extraction and profit. Students will leave with a deeper understanding of the possibilities and challenges of building alternative economies, as well as the analytical and interpersonal tools needed to participate in or design such systems themselves, skills valuable for future work in social innovation, public service, and community-based change."
-  },
-  {
     "id": "POLSCI-138J",
     "subject": "POLSCI",
     "courseNumber": "138J",
@@ -12079,17 +11967,6 @@
       "History & Culture"
     ],
     "description": "In this course, we will think critically about the history of clothing in the world, how choices about clothing have shaped political, economic, and social outcomes across the world, and how the choices we make every day when we get dressed relate to the broader world around us. In doing so, we will explore the role(s) of clothing in global history, the history of industrialization, the political uses of clothing, and current interactions between the political economy of fashion and the environment. Students should come to the course ready to engage critically with their everyday decisions and the wider implications of these choices. "
-  },
-  {
-    "id": "SOCIOL-198BC",
-    "subject": "SOCIOL",
-    "courseNumber": "198BC",
-    "title": "Directed Group Study for Undergraduates--Berkeley Connect",
-    "department": "Sociology",
-    "interests": [
-      "Society & Politics"
-    ],
-    "description": "Berkeley Connect is a mentoring program, offered through various academic departments, that helps students build intellectual community. Over the course of a semester, enrolled students participate in regular small-group discussions facilitated by a graduate student mentor (following a faculty-directed curriculum), meet with their graduate student mentor for one-on-one academic advising, attend lectures and panel discussions featuring department faculty and alumni, and go on field trips to campus resources. Students are not required to be declared majors in order to participate."
   },
   {
     "id": "SOCIOL-R1B",
@@ -12666,17 +12543,6 @@
     "description": "Biology has become a data science! This lab course aims for student curiosity to drive hands-on case studies and coding projects about biological applications of data science. The course design supports students’ development of fundamental and transferable computational and statistical skills for critically thinking about and using data in biology. Ethical considerations are interwoven throughout. This course offers projects with multiple levels of sophistication and complexity, enabling participation for students with varying levels of experience. PREREQUISITES: Biology 1A; Biology 1B (can be taken concurrently); Data C8 or equivalent statistics and programming experience"
   },
   {
-    "id": "DESINV-198",
-    "subject": "DESINV",
-    "courseNumber": "198",
-    "title": "Directed Group Study for Undergraduates",
-    "department": "Design Innovation",
-    "interests": [
-      "Business & Economics"
-    ],
-    "description": "Directed group study on various topics in design innovation."
-  },
-  {
     "id": "EALANG-C120",
     "subject": "EALANG",
     "courseNumber": "C120",
@@ -13135,17 +13001,6 @@
     "description": "Survey of major life financial decisions (e.g., career choice, consumption versus saving, investments, mortgages, insurance) and how decision-making biases (e.g., overconfidence, present bias, limited attention) can lead to sub-optimal choice. The course draws on research from economics, psychology, and sociology.  "
   },
   {
-    "id": "MCELLBI-198",
-    "subject": "MCELLBI",
-    "courseNumber": "198",
-    "title": "Directed Group Study",
-    "department": "Molecular & Cell Biology",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Lectures and small group discussions focusing on topics of interest, varying from semester to semester."
-  },
-  {
     "id": "NUCENG-155",
     "subject": "NUCENG",
     "courseNumber": "155",
@@ -13521,17 +13376,6 @@
       "Business & Economics"
     ],
     "description": "This course will study the optimal design of mechanisms in the presence of incomplete information and imperfect observability. The course will begin with the \"classic\" principal-agent problem and will then develop its applications to the \"implicit contracts\" theory of agency and to the choice of government policies for regulated industries. The second half of the course will treat the design of auctions, regulation with costly or imperfect monitoring, mechanism design with limited contracts."
-  },
-  {
-    "id": "ELENG-198",
-    "subject": "ELENG",
-    "courseNumber": "198",
-    "title": "Directed Group Study for Advanced Undergraduates",
-    "department": "Electrical Eng & Computer Sci",
-    "interests": [
-      "Tech & Engineering"
-    ],
-    "description": "Group study of selected topics in electrical engineering, usually relating to new developments."
   },
   {
     "id": "ELENG-227BT",
@@ -14149,17 +13993,6 @@
     "description": "Fluid dynamics, radiative transfer, and the kinetics, spectroscopy, and measurement of atmospherically relevant species are explored through laboratory experiments, numerical simulations, and field observations. "
   },
   {
-    "id": "ESPM-298",
-    "subject": "ESPM",
-    "courseNumber": "298",
-    "title": "Directed Group Study",
-    "department": "Env Sci, Policy, & Mgmt",
-    "interests": [
-      "Health & Environment"
-    ],
-    "description": "Advanced study of research topics which vary each semester."
-  },
-  {
     "id": "FILIPN-100B",
     "subject": "FILIPN",
     "courseNumber": "100B",
@@ -14194,28 +14027,6 @@
       "Society & Politics"
     ],
     "description": "Discusses application of social psychological theory and research to information technologies and systems; we focus on sociological social psychology, which largely focuses on group processes, networks, and interpersonal relationships. Information technologies considered include software systems used on the internet such as social networks, email, and social games, as well as specific hardware technologies such as mobile devices, computers, wearables, and virtual/augmented reality devices. We examine human communication practices, through the lens of different social psychology theories, including: symbolic interaction, identity theories, social exchange theory, status construction theory, and social networks and social structure theory."
-  },
-  {
-    "id": "INFO-98",
-    "subject": "INFO",
-    "courseNumber": "98",
-    "title": "Directed Group Study for Lower Division Undergraduates",
-    "department": "School of Information",
-    "interests": [
-      "Tech & Engineering"
-    ],
-    "description": "Lectures and small group discussions focusing on topics of interest, varying from semester to semester."
-  },
-  {
-    "id": "INTEGBI-98",
-    "subject": "INTEGBI",
-    "courseNumber": "98",
-    "title": "Directed Group Study",
-    "department": "Integrative Biology",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Lectures and small group discussions focusing on topics of interest, varying from semester to semester."
   },
   {
     "id": "MATH-152",
@@ -14498,17 +14309,6 @@
     "description": "An introduction to business methods of analysis and terminology for nonbusiness graduate students. The course is taught in three five-week modules: (1) organizational behavior and management, (2) accounting and finance, and (3) marketing and strategy."
   },
   {
-    "id": "MCELLBI-98",
-    "subject": "MCELLBI",
-    "courseNumber": "98",
-    "title": "Directed Group Study",
-    "department": "Molecular & Cell Biology",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Lectures and small group discussions focusing on topics of interest, varying from semester to semester."
-  },
-  {
     "id": "NUSCTX-C130",
     "subject": "NUSCTX",
     "courseNumber": "C130",
@@ -14717,17 +14517,6 @@
     "description": "This course will look at peace (and conflict)  in a wide variety of formats and contexts, and will examine both the theories that seek to explain peace and the practices that compose it. The course is structured around a series of modules, each dealing with a different facet of peace and/or conflict. "
   },
   {
-    "id": "GLOBAL-198",
-    "subject": "GLOBAL",
-    "courseNumber": "198",
-    "title": "Directed Group Study",
-    "department": "Interdisc Social Science Pgms",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Directed group studies of selected topics which vary from year to year."
-  },
-  {
     "id": "HISTART-190B",
     "subject": "HISTART",
     "courseNumber": "190B",
@@ -14828,17 +14617,6 @@
       "Society & Politics"
     ],
     "description": "Scientists regularly gather data through observation. Sociologists can go a step further and ask the objects of their studies about their lives and thoughts. This upper-level course teaches students how to engage in scientific research using question-based data. It involves a mix of classroom and hands-on learning, culminating in an independent research paper."
-  },
-  {
-    "id": "SOCIOL-198",
-    "subject": "SOCIOL",
-    "courseNumber": "198",
-    "title": "Directed Group Study for Undergraduates",
-    "department": "Sociology",
-    "interests": [
-      "Society & Politics"
-    ],
-    "description": "Group studies of selected topics which vary over time."
   },
   {
     "id": "SPANISH-104B",
@@ -14955,19 +14733,6 @@
     "description": "Seminar in which students synthesize their knowledge, skills, and interests into a holistic perspective. A one-hour oral presentation in the area of interest and a senior thesis synthesizing the area of interest are required. Required final semester for all CRS majors."
   },
   {
-    "id": "GEOG-198",
-    "subject": "GEOG",
-    "courseNumber": "198",
-    "title": "Directed Group Study",
-    "department": "Geography",
-    "interests": [
-      "Health & Environment",
-      "History & Culture",
-      "Society & Politics"
-    ],
-    "description": "As the growing housing crisis continues to impact the San Francisco Bay Area, this course aims to examine the region at its epicenter– San Francisco. This DeCal will examine systemic socioeconomic forces that drive displacement and deepen inequality, including the city’s rising cost of living, economic and housing policies, and its severely disproportionate impact on marginalized communities that contribute to the rising rate of “homelessness.” This course will analyze the rich cultural history of community resistance in the Tenderloin and Mission Districts against the city's rapid gentrification, policing efforts, and various policies that have attempted to \"eliminate homelessness.” Ultimately, this DeCal encourages students to think critically, engage empathetically, and humanize the vulnerable communities impacted by San Francisco’s urgent housing crisis.\nIn conjunction with the course, students will participate in the Alternative Breaks Trip to San Francisco’s Tenderloin\nDistrict. This provides students the opportunity to learn directly from our partners working with the unhoused\npopulation. As we serve alongside these organizations, we will reflect on how our own identities and experiences shape\nour engagement. Together, this course and trip aim to equip students with the knowledge and understanding necessary\nto support meaningful advocacy for economic justice in the Bay Area and beyond."
-  },
-  {
     "id": "GERMAN-160A",
     "subject": "GERMAN",
     "courseNumber": "160A",
@@ -15070,17 +14835,6 @@
       "Health & Environment"
     ],
     "description": "This course explores basic principles and techniques used in human and animal nutrition and metabolism research. Each class session starts with a lecture that will provide background on the experimental technique(s) that you will be using in lab and describe similar techniques used in metabolic research. Then, students work in pairs in the lab designing and performing experiments as well as analyzing data. Students will also present the data they obtain and write a report in the style of a scientific paper."
-  },
-  {
-    "id": "PHYSICS-198",
-    "subject": "PHYSICS",
-    "courseNumber": "198",
-    "title": "Directed Group Study",
-    "department": "Physics",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Enrollment restrictions apply; see the Introduction to Courses and Curricula section in this catalog."
   },
   {
     "id": "POLSCI-123M",
@@ -15695,17 +15449,6 @@
     "description": "This course examines the historical origins of food and nutrition improvement programs in the United States, including the political and administrative conditions that led to the development of these programs. It also examines the goals, design, operations, and effectiveness of some of these programs: Food Stamp Program, the Special Supplemental Nutrition Program for Women, Infants, and Children (WIC), the National School Lunch Program, the School Breakfast Program, Head Start, the Child Care Food Program, and the Elderly Nutrition Program."
   },
   {
-    "id": "PHYSICS-98",
-    "subject": "PHYSICS",
-    "courseNumber": "98",
-    "title": "Directed Group Study",
-    "department": "Physics",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "This is a 2-unit course. \n\nThis is a discussion and project-based course focusing on the past and present of\nsystemic bias in STEM, specifically in the physical sciences. The first half of the course will be concerned\nmainly with study the narrative of science; how the story of science has been told, who is telling those\nstories, and how this privileges some people and leaves out others. In the second half of the course, we will\nask what it means to be an ethical scientist and explore how society and science intersect. Throughout,\nthere will be an emphasis on students actively engaging with the ideas of the course in their own lives; the\ntwo mini-projects and a final capstone are the main examples of this."
-  },
-  {
     "id": "PLANTBI-101L",
     "subject": "PLANTBI",
     "courseNumber": "101L",
@@ -15726,17 +15469,6 @@
       "Science & Nature"
     ],
     "description": "Group studies of selected topics."
-  },
-  {
-    "id": "PUBPOL-198",
-    "subject": "PUBPOL",
-    "courseNumber": "198",
-    "title": "Directed Group Study",
-    "department": "Goldman School Public Policy",
-    "interests": [
-      "Society & Politics"
-    ],
-    "description": "Group study of a selected topic or topics in Public Policy. Meetings to be arranged."
   },
   {
     "id": "PUNJABI-1B",
@@ -16139,17 +15871,6 @@
     "description": "Participation in technical theater practice associated with department theater and dance productions to include workshop activities (fabrication, treatment, and installation) in one or more of: costumes, hair, make-up, scenery, properties, lighting, video, and sound for live performance. "
   },
   {
-    "id": "UGIS-98",
-    "subject": "UGIS",
-    "courseNumber": "98",
-    "title": "Directed Group Study for Lower Division Students",
-    "department": "UG Interdisciplinary Studies",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Seminars for the group study of topics not covered by regularly scheduled courses. Topics may vary from semester to semester."
-  },
-  {
     "id": "AFRICAM-139",
     "subject": "AFRICAM",
     "courseNumber": "139",
@@ -16181,17 +15902,6 @@
       "Arts & Design"
     ],
     "description": "This advanced course encourages students to stretch the technical limits of ceramic materials and processes. Project assignments will challenge students to develop strong conceptual and material practices, linking their work to larger issues in contemporary art. Topics may include: the intimately handmade, multiples and mass production, conceptual craft, public art, community engagement, interdisciplinary practices, performance, ceramic 3-D printing/modeling, and more. Hands-on demonstrations, field trips, artist lectures, and readings/discussion will accompany dedicated studio time and instruction. Prior experience in clay is expected."
-  },
-  {
-    "id": "ASTRON-198",
-    "subject": "ASTRON",
-    "courseNumber": "198",
-    "title": "Directed Group Study",
-    "department": "Astronomy",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Topics will vary with instructor."
   },
   {
     "id": "CHEM-262",
@@ -17812,17 +17522,6 @@
     "description": "H190B is the second of a two-semester research seminar designed to provide support and structure to political science seniors writing an honors thesis. To receive department honors, students must maintain the minimum GPA for honors and complete H190B with a B+ or better. For additional details, please consult the Undergraduate Advising Office or http://www.polisci.berkeley.edu."
   },
   {
-    "id": "PSYCH-198",
-    "subject": "PSYCH",
-    "courseNumber": "198",
-    "title": "Directed Group Study",
-    "department": "Psychology",
-    "interests": [
-      "Society & Politics"
-    ],
-    "description": "Group study of a selected topic or topics in psychology. Enrollment is restricted by regulations of the Berkeley Division listed elsewhere in this catalog."
-  },
-  {
     "id": "RHETOR-114",
     "subject": "RHETOR",
     "courseNumber": "114",
@@ -18439,17 +18138,6 @@
     "description": "A nuanced understanding of how language reveals and conceals realities of the world is an important asset for any educational enterprise that aims toward a critical and transformative engagement with the world. This course focuses on the relationship between language and the world: language inhabits the world that language itself contributes to shaping."
   },
   {
-    "id": "ELENG-98",
-    "subject": "ELENG",
-    "courseNumber": "98",
-    "title": "Directed Group Study for Undergraduates",
-    "department": "Electrical Eng & Computer Sci",
-    "interests": [
-      "Tech & Engineering"
-    ],
-    "description": "Group study of selected topics in electrical engineering, usually relating to new developments."
-  },
-  {
     "id": "ENGLISH-C136",
     "subject": "ENGLISH",
     "courseNumber": "C136",
@@ -18904,17 +18592,6 @@
     "department": "Economics",
     "interests": [
       "Business & Economics"
-    ],
-    "description": "Description not available."
-  },
-  {
-    "id": "EDUC-98",
-    "subject": "EDUC",
-    "courseNumber": "98",
-    "title": "Directed Group Study",
-    "department": "Grad School of Education",
-    "interests": [
-      "Society & Politics"
     ],
     "description": "Description not available."
   },
@@ -19785,17 +19462,6 @@
       "Business & Economics"
     ],
     "description": "Description not available."
-  },
-  {
-    "id": "EDUC-198",
-    "subject": "EDUC",
-    "courseNumber": "198",
-    "title": "Directed Group Study",
-    "department": "Grad School of Education",
-    "interests": [
-      "Society & Politics"
-    ],
-    "description": "Group discussion, research, and reporting on selected topics. Student initiation in choice of subjects is solicited and welcomed."
   },
   {
     "id": "EDUC-258",
@@ -23364,17 +23030,6 @@
     "description": "Part two of a two-semester core sequence on performance theory, required of first-year Performance Studies PhD students. The course examines key issues and key words in performance studies, from the field’s emergence in the 1970s and 1980s to ongoing contemporary debates. Precise topics will vary by instructor, but may include theoretical investigations of space; liveness, media, and presence; affect; economies; activism and politics; and more. Offered spring semester.\n"
   },
   {
-    "id": "THEATER-98",
-    "subject": "THEATER",
-    "courseNumber": "98",
-    "title": "Directed Group Study",
-    "department": "Theater Dance & Perf Stds",
-    "interests": [
-      "Arts & Design"
-    ],
-    "description": "Group study of a topic not included in the regular department curriculum. Topics may be initiated by students. "
-  },
-  {
     "id": "VISSCI-298",
     "subject": "VISSCI",
     "courseNumber": "298",
@@ -25025,17 +24680,6 @@
     "description": "Advanced performance workshop with research including performance-based methodology, theory, and analytical research skills in developing written and performance works. Topics include cross-disciplinary arts, dramaturgy, and collaborative practice. "
   },
   {
-    "id": "TURKISH-198",
-    "subject": "TURKISH",
-    "courseNumber": "198",
-    "title": "Directed Group Study for Upper Division Students",
-    "department": "Middle Eastern Lang & Cultures",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Instruction in areas not covered by regularly scheduled courses."
-  },
-  {
     "id": "UGIS-192C",
     "subject": "UGIS",
     "courseNumber": "192C",
@@ -25137,17 +24781,6 @@
     "description": "Individual training for graduate students in planning and performing research under the supervision of a faculty adviser, intended to provide academic credit for the experience obtained while holding a research assistantship."
   },
   {
-    "id": "ASTRON-98",
-    "subject": "ASTRON",
-    "courseNumber": "98",
-    "title": "Directed Group Study",
-    "department": "Astronomy",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Topics will vary with instructor."
-  },
-  {
     "id": "BIOENG-298",
     "subject": "BIOENG",
     "courseNumber": "298",
@@ -25238,17 +24871,6 @@
       "Science & Nature"
     ],
     "description": "Weekly seminar with industry partners invited to give presentations on bio-based research, technologies, equipment, processes, and/or products. Provides an interactive interface for students and the bioprocess industry. Offered Fall and Spring semesters."
-  },
-  {
-    "id": "CIVENG-198",
-    "subject": "CIVENG",
-    "courseNumber": "198",
-    "title": "Directed Group Study for Advanced Undergraduates",
-    "department": "Civil & Environmental Eng",
-    "interests": [
-      "Tech & Engineering"
-    ],
-    "description": "Group study of a selected topic or topics in civil engineering."
   },
   {
     "id": "CIVENG-199",
@@ -26283,28 +25905,6 @@
     "description": "Undergraduate Research Apprenticeship Program (URAP). Directed individual research on topics connected to faculty scholarship."
   },
   {
-    "id": "UGIS-198",
-    "subject": "UGIS",
-    "courseNumber": "198",
-    "title": "Directed Group Study for Upper Division Students",
-    "department": "UG Interdisciplinary Studies",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Seminars for group study of topics not covered by regularly scheduled courses. Topics may vary from semester to semester. Students must have completed 60 units to be eligible to enroll."
-  },
-  {
-    "id": "AMERSTD-98",
-    "subject": "AMERSTD",
-    "courseNumber": "98",
-    "title": "Directed Group Study",
-    "department": "UG Interdisciplinary Studies",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Written proposal must be approved by sponsoring faculty. Seminars for the group study of selected topics, which will vary from year to year. Topics may be initiated by students."
-  },
-  {
     "id": "ARESEC-259",
     "subject": "ARESEC",
     "courseNumber": "259",
@@ -26569,17 +26169,6 @@
     "description": "This capstone project is designed to allow students to “finish off” their Dutch minors and majors in such a way as to return to, develop, and synthesize what they have learned in the minor or major. Students will begin by reviewing their previous seminar paper with faculty and highlighting passages that could use re-crafting, argument elements that are not strong, and points where research could be added. They will then proceed to revise and expand their paper, providing occasional progress reports and other short assignments to keep them moving forward. They will submit various components of the in-progress revisions to their adviser for comment and feedback. "
   },
   {
-    "id": "DUTCH-198",
-    "subject": "DUTCH",
-    "courseNumber": "198",
-    "title": "Directed Group Study",
-    "department": "German",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Description not available."
-  },
-  {
     "id": "DUTCH-199",
     "subject": "DUTCH",
     "courseNumber": "199",
@@ -26826,17 +26415,6 @@
       "Science & Nature"
     ],
     "description": "Honors students are required to research and write a thesis based on the prospectus developed in GLOBAL H102. The thesis work is reviewed by the honors instructor and a second reader to be selected based on the thesis topic. Weekly progress reports required. "
-  },
-  {
-    "id": "GWS-98",
-    "subject": "GWS",
-    "courseNumber": "98",
-    "title": "Directed Group Study for Undergraduates",
-    "department": "Gender & Womens Studies",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Seminars for the group study of selected topics not covered by regularly scheduled courses. Topics will vary from year to year."
   },
   {
     "id": "HISTART-C196A",
@@ -27568,17 +27146,6 @@
     "description": "Beginner's course. Sequence beginning fall."
   },
   {
-    "id": "POLSCI-198",
-    "subject": "POLSCI",
-    "courseNumber": "198",
-    "title": "Directed Group Study for Undergraduates",
-    "department": "Political Science",
-    "interests": [
-      "Society & Politics"
-    ],
-    "description": "Submission of study proposal by faculty sponsor to the department chairman one month in advance of the semester to be offered. Group studies of selected topics which vary from year to year."
-  },
-  {
     "id": "POLSCI-290IP",
     "subject": "POLSCI",
     "courseNumber": "290IP",
@@ -27770,17 +27337,6 @@
     "description": "Individual study in consultation with the graduate adviser, intended to provide an opportunity for qualified students to prepare themselves for the master's comprehensive examinations. Units may not be used to meet either unit or residence requirements for a master's degree."
   },
   {
-    "id": "STAT-98",
-    "subject": "STAT",
-    "courseNumber": "98",
-    "title": "Directed Group Study",
-    "department": "Statistics",
-    "interests": [
-      "Math & Data"
-    ],
-    "description": "Must be taken at the same time as either Statistics 2 or 21. This course assists lower division statistics students with structured problem solving, interpretation and making conclusions."
-  },
-  {
     "id": "THEATER-202",
     "subject": "THEATER",
     "courseNumber": "202",
@@ -27858,17 +27414,6 @@
       "Science & Nature"
     ],
     "description": "Students will meet in seminar weekly and will be required to write individual research papers based on their individual Area of Concentration, with guidance and support from the seminar instructor."
-  },
-  {
-    "id": "AMERSTD-198",
-    "subject": "AMERSTD",
-    "courseNumber": "198",
-    "title": "Directed Group Study for Advanced Undergraduates",
-    "department": "UG Interdisciplinary Studies",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Seminars for the group study of selected topics not covered by regularly scheduled courses. Topics will vary from semester to semester. Students must have completed 60 units in order to be eligible to enroll."
   },
   {
     "id": "ARESEC-602",
@@ -28494,17 +28039,6 @@
     "description": "Independent study in topics not covered by regularly scheduled courses. "
   },
   {
-    "id": "JOURN-198",
-    "subject": "JOURN",
-    "courseNumber": "198",
-    "title": "Directed Group Study in Journalism",
-    "department": "Grad School of Journalism",
-    "interests": [
-      "Society & Politics"
-    ],
-    "description": "Description not available."
-  },
-  {
     "id": "JOURN-210",
     "subject": "JOURN",
     "courseNumber": "210",
@@ -28603,17 +28137,6 @@
       "Science & Nature"
     ],
     "description": "Training in elicitation and analysis of linguistic data in a simulated field setting. The same language is used throughout the year. Linguistics 240B is the continuation of 240A. "
-  },
-  {
-    "id": "LS-98",
-    "subject": "LS",
-    "courseNumber": "98",
-    "title": "Directed Group Study",
-    "department": "UG Interdisciplinary Studies",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Student-directed course under the supervision of a faculty member. Subject matter to change from semester to semester. \n"
   },
   {
     "id": "LS-C70T",
@@ -29821,17 +29344,6 @@
     "description": "Individual project of research or study. "
   },
   {
-    "id": "CHMENG-198",
-    "subject": "CHMENG",
-    "courseNumber": "198",
-    "title": "Directed Group Study for Undergraduates",
-    "department": "Chem & Biomolecular Eng",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Supervised research on a specific topic. Enrollment is restricted; see Introduction to Courses and Curricula section in the General Catalog."
-  },
-  {
     "id": "CLASSIC-299",
     "subject": "CLASSIC",
     "courseNumber": "299",
@@ -30024,39 +29536,6 @@
     "description": "The MDP Capstone Experience aims to guide students to successfully complete their capstone (final project or master’s thesis) milestone from the Master of Development Practice (MDP) program. The course aims to help students create an outstanding final project or master’s thesis, and to provide an appropriate scaffolding. Students will reflect on their pedagogical and professional journey during the MDP program. One can expect to acquire research-related skills, such as writing a proposal, designing a research project, and writing a literature review, and gain proficiency in the use of Internet-based search engines, data collection, and electronic journals, etc as well as produce stellar presentations."
   },
   {
-    "id": "DUTCH-298",
-    "subject": "DUTCH",
-    "courseNumber": "298",
-    "title": "Directed Group Study",
-    "department": "German",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Course may be repeated for credit as topic varies.  Seminar.  Must be taken on a satisfactory/unsatisfactory basis."
-  },
-  {
-    "id": "ECON-298",
-    "subject": "ECON",
-    "courseNumber": "298",
-    "title": "Directed Group Study for Graduates",
-    "department": "Economics",
-    "interests": [
-      "Business & Economics"
-    ],
-    "description": "Seminars for the group of selected topics, which will vary from year to year."
-  },
-  {
-    "id": "EDUC-298B",
-    "subject": "EDUC",
-    "courseNumber": "298B",
-    "title": "DIRECTED GROUP STUDY",
-    "department": "Grad School of Education",
-    "interests": [
-      "Society & Politics"
-    ],
-    "description": "Research on special problems and topics not covered by courses or seminars."
-  },
-  {
     "id": "EDUC-313G",
     "subject": "EDUC",
     "courseNumber": "313G",
@@ -30182,28 +29661,6 @@
       "Science & Nature"
     ],
     "description": "Supervised independent study and research."
-  },
-  {
-    "id": "GERMAN-298",
-    "subject": "GERMAN",
-    "courseNumber": "298",
-    "title": "Directed Group Study",
-    "department": "German",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Description not available."
-  },
-  {
-    "id": "GWS-198",
-    "subject": "GWS",
-    "courseNumber": "198",
-    "title": "Directed Group Study for Advanced Undergraduates",
-    "department": "Gender & Womens Studies",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Seminars for group study of selected topics not covered by regularly scheduled courses. Topics will vary from year to year."
   },
   {
     "id": "GWS-210",
@@ -31433,17 +30890,6 @@
       "Science & Nature"
     ],
     "description": "Normally reserved for students directly engaged in writing the doctoral dissertation. "
-  },
-  {
-    "id": "SASIAN-198",
-    "subject": "SASIAN",
-    "courseNumber": "198",
-    "title": "Directed Group Study for Upper Division Students",
-    "department": "South & SE Asian Studies",
-    "interests": [
-      "History & Culture"
-    ],
-    "description": "Tutorial instruction in areas not covered by regularly scheduled courses. Four-unit limit per term. "
   },
   {
     "id": "SCANDIN-220",
