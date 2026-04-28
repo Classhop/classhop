@@ -5026,17 +5026,6 @@
     "description": "This is the introductory course in methods of inquiry in architecture research to be required of all entering Ph.D. students in all areas of the program. The purpose is to train students in predissertation and prethesis research strategies, expose them to variety of inquiry methods including the value of scholarly research, the nature of evidence, critical reading as content analysis and writing, presenting and illustrating scholarship in the various disciplines of architecture."
   },
   {
-    "id": "COMPSCI-198",
-    "subject": "COMPSCI",
-    "courseNumber": "198",
-    "title": "Directed Group Studies for Advanced Undergraduates",
-    "department": "Electrical Eng & Computer Sci",
-    "interests": [
-      "Tech & Engineering"
-    ],
-    "description": "Group study of selected topics in Computer Sciences, usually relating to new developments."
-  },
-  {
     "id": "ESPM-130",
     "subject": "ESPM",
     "courseNumber": "130",
@@ -6510,17 +6499,6 @@
     "description": "Historical survey of literature in English: the mid-19th through the mid-20th century.  "
   },
   {
-    "id": "ETHSTD-198",
-    "subject": "ETHSTD",
-    "courseNumber": "198",
-    "title": "Supervised Group Study",
-    "department": "Ethnic Studies",
-    "interests": [
-      "History & Culture"
-    ],
-    "description": "Group study of selected topics which will vary from semester to semester."
-  },
-  {
     "id": "GEOG-C32",
     "subject": "GEOG",
     "courseNumber": "C32",
@@ -6565,17 +6543,6 @@
       "Society & Politics"
     ],
     "description": "This is an upper division course dealing with the relevance of language to social issues in African societies. It will focus on political developments in Africa and the use of language in fostering national identity; attaining cultural emancipation; and as a tool of oppression, of maintenance of social relations, and of addressing issues of education and childhood development, etc. The course will examine such issues as the roots of national language policies as influenced by Africa's reaction to colonialism; the role of western languages in African society and the attitudes towards African languages and cultures; the challenges of nation-building in modern African states; the use of African languages in government, education, and technology; the role of language in dealing with the HIV/AIDS pandemic, and other health issues; minority languages, endangered languages, and language preservation; cultural responses to migration and African diaspora: the use of African languages in the age of globalization and information technology."
-  },
-  {
-    "id": "CDSS-198",
-    "subject": "CDSS",
-    "courseNumber": "198",
-    "title": "Directed Group Studies for Advanced Undergraduates",
-    "department": "Clg of Comp Data Sci & Soc",
-    "interests": [
-      "Math & Data"
-    ],
-    "description": "Group study of selected topics, which will vary from semester to semester."
   },
   {
     "id": "FILM-10",
@@ -9287,17 +9254,6 @@
     "description": "Basic theories, analytical techniques, and mathematical foundations of micromechanics. It includes 1. physical micromechanics, such as mathematical theory of dislocation, and cohesive fracture models; 2. micro-elasticity that includes Eshelby's eigenstrain theory, comparison variational principles, and micro-crack/micro-cavity based damage theory; 3. theoretical composite material that includes the main methodologies in evaluating overall material properties; 4. meso-plasticity that includes meso-damage theory, and the crystal plasticity; 5. homogenization theory for materials with periodic structures."
   },
   {
-    "id": "DATA-198",
-    "subject": "DATA",
-    "courseNumber": "198",
-    "title": "Directed Group Studies for Advanced Undergraduates",
-    "department": "Data Science Undergrad Studies",
-    "interests": [
-      "Math & Data"
-    ],
-    "description": "Written proposal must be approved by a faculty sponsor, who will serve as Instructor of Record. Seminars for the group study of selected topics, which will vary from semester to semester. Topics may be initiated by students."
-  },
-  {
     "id": "DUTCH-2",
     "subject": "DUTCH",
     "courseNumber": "2",
@@ -9830,17 +9786,6 @@
       "History & Culture"
     ],
     "description": "This course addresses a twofold question: what did the 20th century mean for Japan? And what did Japan mean for the 20th century? In search of answers, we will trace Japan's emergence as a “world-shaper” in its two phases, military and economic, focusing on the institutional, social, and cultural transformations that were attendant to each phase and continue to define Japan’s presence in the contemporary world."
-  },
-  {
-    "id": "INTEGBI-198",
-    "subject": "INTEGBI",
-    "courseNumber": "198",
-    "title": "Supervised Group Study and Research By Upper Division Students",
-    "department": "Integrative Biology",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Undergraduate research by small groups."
   },
   {
     "id": "MATH-261B",
@@ -11776,17 +11721,6 @@
     "description": "<Formerly 292T>. Constructive problems in computational geometry: convex hulls, triangulations, Voronoi diagrams, arrangements of hyperplanes; relationships among these problems. Search problems: advanced data structures; subdivision search; various kinds of range searches. Models of computation; lower bounds. "
   },
   {
-    "id": "CYPLAN-98",
-    "subject": "CYPLAN",
-    "courseNumber": "98",
-    "title": "Special Group Study",
-    "department": "City & Regional Planning",
-    "interests": [
-      "Health & Environment"
-    ],
-    "description": "Group studies developed to meet specific needs of students."
-  },
-  {
     "id": "ECON-281",
     "subject": "ECON",
     "courseNumber": "281",
@@ -12116,17 +12050,6 @@
       "Health & Environment"
     ],
     "description": "Human disruption of biogeochemical and hydrological cycles; causes and consequences of climate change and acid deposition; transport and health impacts of pollutants; loss of species; radioactivity in the environment; and quantitative models to understand these environmental problems."
-  },
-  {
-    "id": "ENGIN-198",
-    "subject": "ENGIN",
-    "courseNumber": "198",
-    "title": "Directed Group Studies for Advanced Undergraduates",
-    "department": "Engineering",
-    "interests": [
-      "Tech & Engineering"
-    ],
-    "description": "Group study of selected topics."
   },
   {
     "id": "GEOG-140A",
@@ -13298,17 +13221,6 @@
       "Math & Data"
     ],
     "description": "The course is designed as a sequence with with Statistics C205A/Mathematics C218A with the following combined syllabus. Measure theory concepts needed for probability. Expection, distributions. Laws of large numbers and central limit theorems for independent random variables. Characteristic function methods. Conditional expectations, martingales and martingale convergence theorems. Markov chains. Stationary processes. Brownian motion."
-  },
-  {
-    "id": "AFRICAM-198",
-    "subject": "AFRICAM",
-    "courseNumber": "198",
-    "title": "Directed Group Studies for Undergraduates",
-    "department": "African American Studies",
-    "interests": [
-      "History & Culture"
-    ],
-    "description": "Supervised research on a specific topic."
   },
   {
     "id": "AFRICAM-98BC",
@@ -15138,17 +15050,6 @@
     "description": "Introductory scientific programming in Python with examples from physics. Topics include: visualization, statistics and probability, regression, numerical integration, simulation, data modeling, function approximation, and algebraic systems. Recommended for freshman physics majors."
   },
   {
-    "id": "PUBPOL-98",
-    "subject": "PUBPOL",
-    "courseNumber": "98",
-    "title": "Group Study in Public Policy",
-    "department": "Goldman School Public Policy",
-    "interests": [
-      "Society & Politics"
-    ],
-    "description": "Group study on selected public policy topics. Open to freshmen and sophomores."
-  },
-  {
     "id": "RHETOR-104",
     "subject": "RHETOR",
     "courseNumber": "104",
@@ -15458,17 +15359,6 @@
       "Science & Nature"
     ],
     "description": "Students will perform state-of-the-art research to address an important question in modern plant biology. The experimental progression exposes students to a variety of modern molecular approaches and techniques. Experimental design, data acquisition, and analysis of the student's real experimental data is emphasized. Research results will be presented in written and oral formats similar to those used in research laboratories."
-  },
-  {
-    "id": "PLANTBI-198",
-    "subject": "PLANTBI",
-    "courseNumber": "198",
-    "title": "Directed Group Studies in Plant Biology",
-    "department": "Plant & Microbial Biology",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Group studies of selected topics."
   },
   {
     "id": "PUNJABI-1B",
@@ -16592,17 +16482,6 @@
     "description": "The course is part of a series required of all Clinical Science students. The sequence (230ABCD) introduces core issues in developmental and adult psychopathology, cultural issues, research methods, and intervention principles. It brings together varied disciplines and perspectives such as neuroscience, social science, public health, cultural perspectives, and the importance of humanization and human rights. The 230B course focuses on bench-to-bedside translation, implementation science, sleep and circadian disorders and cognitive approaches to anxiety and depression. Grant writing mini-workshops will also be included."
   },
   {
-    "id": "STAT-298",
-    "subject": "STAT",
-    "courseNumber": "298",
-    "title": "Directed Study for Graduate Students",
-    "department": "Statistics",
-    "interests": [
-      "Math & Data"
-    ],
-    "description": "Special tutorial or seminar on selected topics."
-  },
-  {
     "id": "THEATER-110B",
     "subject": "THEATER",
     "courseNumber": "110B",
@@ -16705,17 +16584,6 @@
     "description": "This course examines the canonical texts of the late-imperial period, placing them in the context of literary culture of the Ming-Qing. The course focuses on a different set of texts each time it is taught; the aim is to introduce students to the primary issues in scholarship of late-imperial fiction and drama over a period of several years."
   },
   {
-    "id": "CHMENG-98",
-    "subject": "CHMENG",
-    "courseNumber": "98",
-    "title": "Directed Group Studies for Lower Division Undergraduates",
-    "department": "Chem & Biomolecular Eng",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Supervised research on a specific topic."
-  },
-  {
     "id": "CIVENG-268B",
     "subject": "CIVENG",
     "courseNumber": "268B",
@@ -16796,17 +16664,6 @@
       "Science & Nature"
     ],
     "description": "Physics, fabrication, and design of micro-electromechanical systems (MEMS). Micro and nanofabrication processes, including silicon surface and bulk micromachining and non-silicon micromachining. Integration strategies and assembly processes. Microsensor and microactuator devices: electrostatic, piezoresistive, piezoelectric, thermal, magnetic transduction. Electronic position-sensing circuits and electrical and mechanical noise. CAD for MEMS. Design project is required."
-  },
-  {
-    "id": "ENERES-198",
-    "subject": "ENERES",
-    "courseNumber": "198",
-    "title": "Directed Group Studies for Advanced Undergraduates",
-    "department": "Energy & Resources Group",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Group studies of selected topics."
   },
   {
     "id": "ENGLISH-100",
@@ -18631,18 +18488,6 @@
     "description": "Advanced Hebrew, especially designed for those going on to the study of modern Hebrew literature. Vocabulary building, grammar review, and literary analysis of a sampling of modern texts."
   },
   {
-    "id": "INDENG-298",
-    "subject": "INDENG",
-    "courseNumber": "298",
-    "title": "Group Studies, Seminars, or Group Research",
-    "department": "Industrial Eng & Ops Research",
-    "interests": [
-      "Tech & Engineering",
-      "Business & Economics"
-    ],
-    "description": "Advanced seminars in industrial engineering and operations research."
-  },
-  {
     "id": "INFO-259",
     "subject": "INFO",
     "courseNumber": "259",
@@ -19519,17 +19364,6 @@
       "Tech & Engineering"
     ],
     "description": "This course discusses various top-down and bottom-up approaches to synthesizing and processing nanostructured materials. The topics include fundamentals of self assembly, nano-imprint lithography, electron beam lithography, nanowire and nanotube synthesis, quantum dot synthesis (strain patterned and colloidal), postsynthesis modification (oxidation, doping, diffusion, surface interactions, and etching techniques). In addition, techniques to bridging length scales such as heterogeneous integration will be discussed. We will discuss new electronic, optical, thermal, mechanical, and chemical properties brought forth by the very small sizes."
-  },
-  {
-    "id": "ENGIN-98",
-    "subject": "ENGIN",
-    "courseNumber": "98",
-    "title": "Directed Group Studies for Lower Division Undergraduates",
-    "department": "Engineering",
-    "interests": [
-      "Tech & Engineering"
-    ],
-    "description": "Seminars for group study of selected topics, which will vary from year to year. Intended for students in the lower division."
   },
   {
     "id": "ENGLISH-143B",
@@ -20416,17 +20250,6 @@
       "Arts & Design"
     ],
     "description": "Reading and composition in connection with the representation of Scandinavia by outsiders and insiders. Satisfies the first half of the Reading and Composition requirement."
-  },
-  {
-    "id": "SLAVIC-198",
-    "subject": "SLAVIC",
-    "courseNumber": "198",
-    "title": "Supervised Group Study for Undergraduates",
-    "department": "Slavic Languages & Literatures",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Supervised cooperative study of topics (in Slavic and East European languages and literatures) not covered by regularly scheduled courses."
   },
   {
     "id": "SOCIOL-273M",
@@ -22263,17 +22086,6 @@
     "description": "Advanced studies in the several fields of Slavic literatures and linguistics. Content varies."
   },
   {
-    "id": "STAT-198",
-    "subject": "STAT",
-    "courseNumber": "198",
-    "title": "Directed Study for Undergraduates",
-    "department": "Statistics",
-    "interests": [
-      "Math & Data"
-    ],
-    "description": "Special tutorial or seminar on selected topics."
-  },
-  {
     "id": "STAT-C140",
     "subject": "STAT",
     "courseNumber": "C140",
@@ -22405,17 +22217,6 @@
     "description": "Supervised experience in off-campus companies relevant to specific aspects and applications of civil and environmental engineering. Written report required at the end of the semester. Course does not satisfy unit or residence requirements for a master's or doctoral degree."
   },
   {
-    "id": "CIVENG-298",
-    "subject": "CIVENG",
-    "courseNumber": "298",
-    "title": "Group Studies, Seminars, or Group Research",
-    "department": "Civil & Environmental Eng",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Advanced studies in various subjects through special seminars on annually selected topics, informal group studies of special problems, group participation in comprehensive design problems, or group research on complete problems for analysis and experimentation."
-  },
-  {
     "id": "COMPSCI-C8",
     "subject": "COMPSCI",
     "courseNumber": "C8",
@@ -22517,17 +22318,6 @@
       "Science & Nature"
     ],
     "description": "The course is designed to support new science and mathematics teachers in earning a credential for teaching in California secondary schools. Students demonstrate that they have developed the skills to meet the state credentialing requirements by undertaking an inquiry project on their own teaching practice. Effective teaching methods for the science and mathematics classrooms are emphasized, including strategies for lesson planning, assessment, and English language learner support. "
-  },
-  {
-    "id": "EDUC-298C",
-    "subject": "EDUC",
-    "courseNumber": "298C",
-    "title": "Group Studies, Seminars, or Group Research--DCEMST",
-    "department": "Berkeley School of Education",
-    "interests": [
-      "Society & Politics"
-    ],
-    "description": "Advanced group study in education. Topics vary from semester to semester. May consist of organized lectures or seminar discussions, related chiefly to the research area in which the group is working. "
   },
   {
     "id": "ELENG-375",
@@ -22849,17 +22639,6 @@
     "description": "The students will be provided with both the basic framework and current topics of microbial ecology."
   },
   {
-    "id": "PLANTBI-298",
-    "subject": "PLANTBI",
-    "courseNumber": "298",
-    "title": "Plant Biology Group Studies",
-    "department": "Plant & Microbial Biology",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Advanced study of research topics which will vary semester to semester. Enrollment in more than one section permitted."
-  },
-  {
     "id": "POLSCI-290B",
     "subject": "POLSCI",
     "courseNumber": "290B",
@@ -23028,17 +22807,6 @@
       "Society & Politics"
     ],
     "description": "Part two of a two-semester core sequence on performance theory, required of first-year Performance Studies PhD students. The course examines key issues and key words in performance studies, from the field’s emergence in the 1970s and 1980s to ongoing contemporary debates. Precise topics will vary by instructor, but may include theoretical investigations of space; liveness, media, and presence; affect; economies; activism and politics; and more. Offered spring semester.\n"
-  },
-  {
-    "id": "VISSCI-298",
-    "subject": "VISSCI",
-    "courseNumber": "298",
-    "title": "Group Studies, Seminars, or Group Research",
-    "department": "Vision Science Grad Grp",
-    "interests": [
-      "Arts & Design"
-    ],
-    "description": "Enhance skills in scientific writing and critical analysis of research literature. Develop effective communication techniques for presenting complex research information. Foster a collaborative research environment where students can engage in meaningful scientific inquiry and problem solving. Oxyopia is a seminar series featuring lectures on basic, clinical, and applied research in vision."
   },
   {
     "id": "XMBA-295I",
@@ -23422,17 +23190,6 @@
     "description": "This course teaches you to use the tools of applied historical thinking and Science, Technology, and Society (STS) to recognize, analyze, and shape the human contexts and ethics of data. It addresses key topics such as doing ethical data science amid shifting definitions of human subjects, consent, and privacy; the changing relationship between data, democracy, and law; the role of data analytics in how corporations and governments provide public goods such as health and security to citizens; sensors, machine learning and artificial intelligence and changing landscapes of labor, industry, and city life.  It prepares you to engage as a knowledgeable and responsible citizen and professional in the varied arenas of our datafied world."
   },
   {
-    "id": "INDENG-198",
-    "subject": "INDENG",
-    "courseNumber": "198",
-    "title": "Directed Group Studies for Advanced Undergraduates",
-    "department": "Industrial Eng & Ops Research",
-    "interests": [
-      "Tech & Engineering"
-    ],
-    "description": "Group studies of selected topics. Semester course unit value and contact hours will have a one-to-one ratio."
-  },
-  {
     "id": "INTEGBI-181L",
     "subject": "INTEGBI",
     "courseNumber": "181L",
@@ -23592,17 +23349,6 @@
       "Business & Economics"
     ],
     "description": "Professional core competency training for graduate students involved in neuroscience research at Berkeley.  Includes training in giving scientific presentations, scientific writing, and project management.\n"
-  },
-  {
-    "id": "NUCENG-198",
-    "subject": "NUCENG",
-    "courseNumber": "198",
-    "title": "Group Study for Advanced Undergraduates",
-    "department": "Nuclear Engineering",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Group studies of selected topics. "
   },
   {
     "id": "NUCENG-255",
@@ -23808,17 +23554,6 @@
       "Society & Politics"
     ],
     "description": "Courses under this number involve pursuing graduate study in substantive sociological subfields. The courses presume familiarity with the fields of study. Consult departmental catalog for current descriptions."
-  },
-  {
-    "id": "SOCWEL-298",
-    "subject": "SOCWEL",
-    "courseNumber": "298",
-    "title": "Group Study for Graduate Students",
-    "department": "School of Social Welfare",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Intensive examination of selected social welfare topics. "
   },
   {
     "id": "SOCWEL-98BC",
@@ -24781,17 +24516,6 @@
     "description": "Individual training for graduate students in planning and performing research under the supervision of a faculty adviser, intended to provide academic credit for the experience obtained while holding a research assistantship."
   },
   {
-    "id": "BIOENG-298",
-    "subject": "BIOENG",
-    "courseNumber": "298",
-    "title": "Group Studies, Seminars, or Group Research",
-    "department": "Bioengineering",
-    "interests": [
-      "Tech & Engineering"
-    ],
-    "description": "Advanced studies in various subjects through special seminars on topics to be selected each year. Informal group studies of special problems, group participation in comprehensive design problems, or group research on complete problems for analysis and experimentation."
-  },
-  {
     "id": "BIOENG-C106B",
     "subject": "BIOENG",
     "courseNumber": "C106B",
@@ -25077,17 +24801,6 @@
     "description": "Historical and contemporary overview of the professional specialty of school psychology. Examines the empirical evidence for developmental and learning models in relation to the school curriculum and school organization for birth through pre-adolescence."
   },
   {
-    "id": "EDUC-298A",
-    "subject": "EDUC",
-    "courseNumber": "298A",
-    "title": "Group Study for Graduate Students--POME",
-    "department": "Grad School of Education",
-    "interests": [
-      "Society & Politics"
-    ],
-    "description": "Research on special problems and topics not covered by regular courses or seminars. Topics will vary in different semesters."
-  },
-  {
     "id": "EECS-244",
     "subject": "EECS",
     "courseNumber": "244",
@@ -25349,17 +25062,6 @@
       "Math & Data"
     ],
     "description": "This is the second semester of a two-course sequence for those majors in the five year BS/MS program. Students are expected to complete an independent research project under the supervision of a research advisor initiated in Materials Science and Engineering 296A. This course will meet once at the beginning of the semester to outline the expectations of the course. Periodic meetings covering topics such as data analysis and design of experiment will be scheduled. Students will be expected to keep a laboratory notebook outlining their progress during the semester. A final report in journal publication form will be due at the end of the semester. Each student will also give a final presentation on his/her research project at the end of the semester."
-  },
-  {
-    "id": "MATSCI-298",
-    "subject": "MATSCI",
-    "courseNumber": "298",
-    "title": "Group Studies, Seminars, or Group Research",
-    "department": "Materials Science & Eng",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Advanced study in various subjects through special seminars on topics to be selected each year, informal group studies of special problems, group participation in comprehensive design problems or group research on complete problems for analysis and experimentation."
   },
   {
     "id": "MCELLBI-218B",
@@ -25993,17 +25695,6 @@
       "Science & Nature"
     ],
     "description": "Research."
-  },
-  {
-    "id": "CIVENG-98",
-    "subject": "CIVENG",
-    "courseNumber": "98",
-    "title": "Supervised Group Study and Research",
-    "department": "Civil & Environmental Eng",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Supervised group study and research by lower division students."
   },
   {
     "id": "CLASSIC-203",
@@ -26818,17 +26509,6 @@
     "description": "Music 168F is a vocal performance course for music majors who are concurrently enrolled in one of the Department of Music ensembles. Placement is determined by audition and is made at the discretion of the coordinator and supervisor. This course develops fundamental vocal techniques, stage techniques, and musical and dramatic interpretation. "
   },
   {
-    "id": "MUSIC-198",
-    "subject": "MUSIC",
-    "courseNumber": "198",
-    "title": "Group Special Study for Advanced Undergraduates",
-    "department": "Music",
-    "interests": [
-      "Arts & Design"
-    ],
-    "description": "Not to serve in lieu of regular courses of instruction."
-  },
-  {
     "id": "MUSIC-298",
     "subject": "MUSIC",
     "courseNumber": "298",
@@ -27507,17 +27187,6 @@
     "description": "This is the first of the two one-unit courses that make up the Master of Molecular Science and Software Engineering (MSSE) program leadership course. Together, these two one-unit courses aim to introduce program participants to a number of key professional skills that will enhance their performance in today’s business environment. Topics covered in this course include key aspects of management and leadership disciplines; engineering, economic, finance and accounting concepts; effective communication skills, and a technologist’s role in marketing and business strategy formulation and execution."
   },
   {
-    "id": "CHEM-98",
-    "subject": "CHEM",
-    "courseNumber": "98",
-    "title": "Supervised Group Study",
-    "department": "Chemistry",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Group study of selected topics."
-  },
-  {
     "id": "COGSCI-197",
     "subject": "COGSCI",
     "courseNumber": "197",
@@ -27733,17 +27402,6 @@
       "Science & Nature"
     ],
     "description": "Students taking this class will use it to complete the writing of their thesis under the supervision of a Senior Thesis Advisor. This class will operate as an independent study; faculty with more than one Senior Thesis student may choose to meet them in group sessions."
-  },
-  {
-    "id": "ENVDES-298",
-    "subject": "ENVDES",
-    "courseNumber": "298",
-    "title": "Environmental Design Group Studies",
-    "department": "Inst of Urban & Reg Dev",
-    "interests": [
-      "Health & Environment"
-    ],
-    "description": "Topics to be announced at the beginning of each semester."
   },
   {
     "id": "EPS-251",
@@ -28442,17 +28100,6 @@
     "description": "This graduate seminar consists of weekly presentations from Berkeley graduate students as well as outside speakers on topics surrounding evolution, genetics, and genomics. Many labs spread across different departments have research programs focused on evolution, genetics, and genomics. However, it can be challenging to keep abreast of this research and to identify potential collaborations due to the dispersion of labs across different departments and specialties. The Center for Theoretical and Evolutionary Genetics (CTEG) is an informal group of labs that collectively work on genetics and genomics. The seminar seeks to provide a common space for graduate students to present their research and learn about the research of their colleagues."
   },
   {
-    "id": "MECENG-298",
-    "subject": "MECENG",
-    "courseNumber": "298",
-    "title": "Group Studies, Seminars, or Group Research",
-    "department": "Mechanical Engineering",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Advanced studies in various subjects through special seminars on topics to be selected each year. Informal group studies of special problems, group participation in comprehensive design problems, or group research on complete problems for analysis and experimentation."
-  },
-  {
     "id": "MELC-290F",
     "subject": "MELC",
     "courseNumber": "290F",
@@ -28563,17 +28210,6 @@
     "description": "For graduate students in neuroscience in their second or later years. Individual research under faculty supervision. In this course each graduate student conducts basic thesis and dissertation research after successful completion of the first-year laboratory rotation, Neuroscience 291A-291B. Laboratory work provides the basis for students' thesis research, preparation for the preliminary examination, and continued progress toward completion of Ph.D. dissertation. "
   },
   {
-    "id": "NSE-298",
-    "subject": "NSE",
-    "courseNumber": "298",
-    "title": "Group Studies, Seminars, or Group Research",
-    "department": "Nano Sci & Eng Grad Grp",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Advanced studies in various subjects through special seminars on topics to be selected each year. Informal group studies of special problems, group participation in comprehensive design problems, or group research on complete problems for analysis and experimentation."
-  },
-  {
     "id": "NUCENG-299",
     "subject": "NUCENG",
     "courseNumber": "299",
@@ -28676,17 +28312,6 @@
       "Science & Nature"
     ],
     "description": "Graduate seminars on selected topics in clinical optometry."
-  },
-  {
-    "id": "OPTOM-298B",
-    "subject": "OPTOM",
-    "courseNumber": "298B",
-    "title": "Independent or Group Studies",
-    "department": "School of Optometry",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Directed studies on a selected topic(s) within optometry."
   },
   {
     "id": "PBHLTH-206AW",
@@ -29154,17 +28779,6 @@
       "Business & Economics"
     ],
     "description": "Advanced Practicum II advances the experiential learning capacities, professional competencies, and leadership capacities of advanced MSW students. Supervised by a School-qualified social work practitioner employed in an approved agency-based setting, MSW students will be exposed to a range of complex learning opportunities along various phases of the intervention cycle (engagement, assessment, intervention, and evaluation) and at various levels of the social ecology (individuals, families, groups, and communities) and meet advanced competency standards. These opportunities allow the student to practice, receive observationally-based feedback, refine professional competencies, such that ultimately, their competencies can be assessed."
-  },
-  {
-    "id": "SPANISH-198",
-    "subject": "SPANISH",
-    "courseNumber": "198",
-    "title": "Supervised Group Study",
-    "department": "Spanish & Portuguese",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Group study of a topic not included in the regular department curriculum. Topics may be initiated by students under the sponsorship and direction of a member of the Spanish and Portuguese department's faculty."
   },
   {
     "id": "SPANISH-299",
@@ -30868,17 +30482,6 @@
       "Society & Politics"
     ],
     "description": "Supervised experience relevant to specific aspects of Political Economy of Industrial Societies in off-campus organizations. Regular individual meetings with faculty sponsor and written reports required."
-  },
-  {
-    "id": "RHETOR-198",
-    "subject": "RHETOR",
-    "courseNumber": "198",
-    "title": "Supervised Group Study",
-    "department": "Rhetoric",
-    "interests": [
-      "Science & Nature"
-    ],
-    "description": "Instruction for a small group of students on a topic initiated by those students."
   },
   {
     "id": "SANSKR-299",
